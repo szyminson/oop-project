@@ -16,3 +16,9 @@ dependencies {
 application {
     mainClassName = "oop.project.App"
 }
+
+val jar by tasks.getting(Jar::class) {
+    manifest {
+        attributes["Main-Class"] = application.mainClassName
+    }
+}
