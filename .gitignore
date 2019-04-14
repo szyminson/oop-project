@@ -6,5 +6,6 @@ build
 
 # Ignore IDE specific files
 .idea
+*.iml
 .vscode
 
