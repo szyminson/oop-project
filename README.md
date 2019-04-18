@@ -26,4 +26,3 @@ gradlew	run
 
 ```
 ./gradlew run
-```
