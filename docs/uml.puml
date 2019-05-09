@@ -1,26 +1,26 @@
 @startuml
 
 interface IRocketPart {
-  double getMass()
-  Vector createThrust(Vector rotation)
+  + double getMass()
+  + Vector createThrust(Vector rotation)
 }
 
 interface IForceField {
-  Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time)
+  + Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time)
 }
 
 class Wind {
-  double strengthVariation
-  Vector windForce
+  - double strengthVariation
+  - Vector windForce
 }
 
 class GravityField {
-  Vector sourcePosition
-  double strength
+  - Vector sourcePosition
+  - double strength
 }
 
 class AirResistance {
-  double dragCoefficient
+  - double dragCoefficient
 }
 
 
@@ -39,36 +39,36 @@ IRocketPart <|-- Engine
 Engine o- FuelContainer
 
 class Engine {
-  double mass
-  FuelContainer fuelSource
+  - double mass
+  - FuelContainer fuelSource
 }
 
 class FuelContainer {
-  double containerMass
-  double fuelMass
+  - double containerMass
+  - double fuelMass
 
-  double getRemainingFuel()
-  void takeFuel(double amount)
+  + double getRemainingFuel()
+  + void takeFuel(double amount)
 }
 
 class World {
-  Rocket rocket
-  List<IForceField> forceFields
+  - Rocket rocket
+  - List<IForceField> forceFields
 
-  void runSimulation()
+  + void runSimulation()
 }
 
 class Rocket {
-  List<IRocketPart> parts
-  Vector position
-  Vector direction
-  Vector velocity
+  - List<IRocketPart> parts
+  - Vector position
+  - Vector direction
+  - Vector velocity
 
-  double getMass()
-  Vector getVelocity()
-  Vector getPosition()
-  Vector getDirection()
-  Iterable<IRocketPart> getParts()
+  + double getMass()
+  + Vector getVelocity()
+  + Vector getPosition()
+  + Vector getDirection()
+  + Iterable<IRocketPart> getParts()
 }
 
 @enduml
