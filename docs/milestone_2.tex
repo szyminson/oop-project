@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{graphicx}
-
+\usepackage[export]{adjustbox}
 
 \title{Milestone 2}
 \author{Mirosław Kuźniar, Szymon Porzeziński, Bartosz Skrzypczak }
@@ -21,8 +21,9 @@ The main goal of this project is to run a simulation of liftoff and flight of a 
 The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} and have \textcolor{blue}{force fields}, representing different extrenal forces acting on the rocket. The world will need a way to \textcolor{yellow}{run the simulation}. A \textcolor{blue}{rocket} will contain multiple \textcolor{blue}{rocket parts}, with attributes that may affect the course of the simulation. Each component will have \textcolor{blue}{mass} and will be able to \textcolor{yellow}{create thrust force}, which can depend on it's rotation. The \textcolor{blue}{engine} will \textcolor{yellow}{create thrust force} based on a \textcolor{blue}{thrust curve} provided by the user and the \textcolor{blue}{amount of remaining fuel} in the \textcolor{blue}{fuel tank}. The movement of the \textcolor{blue}{rocket} will depend on the \textcolor{blue}{force of gravity}, \textcolor{blue}{wind} and \textcolor{blue}{air resistance}. The world simulation will also \textcolor{yellow}{check whether the rocket has reached a given attitude or returned to the ground}, and stop the simulation.
 
 \section{Use case diagram}
-\hspace{-70pt}\includegraphics[width=17cm]{use_case_diagram.png}
+\includegraphics[width=17cm,center]{use_case_diagram.png}
 \vspace{5cm}
+
 \section{CRC cards}
 
 \begin {center}
@@ -140,6 +141,6 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \end{center}
 
 \section{UML Class Diagrams}
-\hspace{-70pt}\includegraphics[width=17cm]{uml_diagram.png}
+\includegraphics[width=17cm,center]{uml_diagram.png}
 
 \end{document}
