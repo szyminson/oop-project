@@ -34,7 +34,7 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} none}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Coordinates interactions between its parts, and stores the current state of the rocket (position, velocity, direction)\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Engine\\Tank\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Coordinates interactions between its parts, and stores the current state of the rocket (position, velocity, direction)\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\IRocketPart}\\
 \hline
  \end{tabular}\vspace{.4cm}
  
@@ -45,13 +45,13 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} IRocketPart}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Based on its own thrust values and the amount of remaining fuel, creates thrust force\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\FuelTank\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Based on its own thrust values and the amount of remaining fuel, creates thrust force\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\FuelContainer}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
 \begin{tabular}{|c|c|}
 \hline
-\multicolumn{2}{|l|}{\textbf{Classname:} Tank}\\
+\multicolumn{2}{|l|}{\textbf{Classname:} FuelContainer}\\
 \hline
 \multicolumn{2}{|l|}{\textbf{Superclass:} IRocketPart}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
@@ -67,7 +67,7 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} IForceField}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Creates a force based on wind speed and direction at a given point\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Creates a force based on wind speed and direction at a given point\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\none}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
@@ -78,18 +78,18 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} IForceField}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Calculates the force of gravity, based on position\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Calculates the force of gravity, based on position\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\none}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
 \begin{tabular}{|c|c|}
 \hline
-\multicolumn{2}{|l|}{\textbf{Classname:} AirResistanceField}\\
+\multicolumn{2}{|l|}{\textbf{Classname:} AirResistance}\\
 \hline
 \multicolumn{2}{|l|}{\textbf{Superclass:} IForceField}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Calculates the force of air resistance, based on position and speed\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Calculates the force of air resistance, based on position and speed\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\none}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
@@ -98,9 +98,9 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Classname:} IForceField}\\
 \hline
 \multicolumn{2}{|l|}{\textbf{Superclass:} none}\\
-\multicolumn{2}{|l|}{\textbf{Subclass/es:} Wind, GravityField, AirResistanceField}\\
+\multicolumn{2}{|l|}{\textbf{Subclass/es:} Wind, GravityField, AirResistance}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\A general interface for interacting with force fields\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\A general interface for interacting with force fields. The resulting force can depend on position, speed, rotation, mass and time.\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\none}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
@@ -122,7 +122,7 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} none}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} Engine, Tank}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Can have mass and may be a source of a force\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Vector}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Keeps track if it's mass and may be a source of a force\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\none}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
@@ -133,7 +133,7 @@ The \textcolor{blue}{simulated world} will contain the \textcolor{blue}{rocket} 
 \multicolumn{2}{|l|}{\textbf{Superclass:} none}\\
 \multicolumn{2}{|l|}{\textbf{Subclass/es:} none}\\
 \hline
-\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Controls the simulation, determines when to start and stop it, and shows the results\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Rocket\\IForceField}\\
+\parbox[]{5cm}{\vspace{3px}\textbf{Responsibilities:} \\Starts and controls the simulation, determines when to start and stop it, and shows the results\vspace{3px}} & \parbox[]{5cm}{\textbf{Collaborations:}\\Rocket\\IForceField}\\
 \hline
  \end{tabular}\vspace{.4cm}
 
