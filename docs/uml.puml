@@ -69,6 +69,7 @@ class Rocket {
   + Vector getPosition()
   + Vector getDirection()
   + Iterable<IRocketPart> getParts()
+  + updateRocket(Vector externalForce, double deltaTime)
 }
 
 @enduml
