@@ -1,7 +1,6 @@
 package oop.project;
 
 import java.util.List;
-import java.util.Vector;
 
 public class Rocket {
     private List<IRocketPart> parts;

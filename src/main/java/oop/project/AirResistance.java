@@ -1,7 +1,5 @@
 package oop.project;
 
-import java.util.Vector;
-
 public class AirResistance implements IForceField {
     private double dragCoefficient;
 

@@ -1,6 +1,5 @@
 package oop.project;
 
-import java.util.Vector;
 
 public class GravityField implements IForceField {
     private double strength;

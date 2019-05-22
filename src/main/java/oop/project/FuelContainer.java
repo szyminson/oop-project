@@ -1,6 +1,5 @@
 package oop.project;
 
-import java.util.Vector;
 
 public class FuelContainer implements IRocketPart {
     private double containerMass;

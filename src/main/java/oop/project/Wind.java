@@ -1,6 +1,5 @@
 package oop.project;
 
-import java.util.Vector;
 
 public class Wind implements IForceField {
     private double strengthVariation;

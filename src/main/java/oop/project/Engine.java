@@ -1,6 +1,5 @@
 package oop.project;
 
-import java.util.Vector;
 
 public class Engine implements IRocketPart {
     private double mass;
