@@ -6,7 +6,7 @@ public class World {
     private Rocket rocket;
     private List<IForceField> forceFields;
 
-    public void runSimulation(){
+    public void runSimulation() {
 
     }
 }

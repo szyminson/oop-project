@@ -9,6 +9,7 @@ public class FuelContainer implements IRocketPart {
     public double getRemainingFuel() {
         return 0;
     }
+
     public void takeFuel(double amount) {
 
     }
@@ -17,6 +18,7 @@ public class FuelContainer implements IRocketPart {
     public double getMass() {
         return 0;
     }
+
     @Override
     public Vector createThrust(Vector rotation) {
         return null;

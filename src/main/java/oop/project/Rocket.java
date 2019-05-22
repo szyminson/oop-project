@@ -12,19 +12,24 @@ public class Rocket {
     public double getMass() {
         return 0;
     }
+
     public Vector getVelocity() {
         return null;
     }
+
     public Vector getPosition() {
         return null;
     }
+
     public Vector getDirection() {
         return null;
     }
-    public Iterable <IRocketPart> getParts() {
+
+    public Iterable<IRocketPart> getParts() {
         return null;
     }
-    public void updateRocket (Vector externalForce, double deltaTime) {
+
+    public void updateRocket(Vector externalForce, double deltaTime) {
 
     }
 }

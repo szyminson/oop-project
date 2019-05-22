@@ -10,6 +10,7 @@ public class Engine implements IRocketPart {
     public double getMass() {
         return 0;
     }
+
     @Override
     public Vector createThrust(Vector rotation) {
         return null;
