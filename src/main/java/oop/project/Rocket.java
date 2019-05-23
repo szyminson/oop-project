@@ -9,23 +9,23 @@ public class Rocket {
     private Vector velocity;
 
     public double getMass() {
-        return 0;
+        return this.parts.stream().mapToDouble(IRocketPart::getMass).sum();
     }
 
     public Vector getVelocity() {
-        return null;
+        return this.velocity;
     }
 
     public Vector getPosition() {
-        return null;
+        return this.position;
     }
 
     public Vector getDirection() {
-        return null;
+        return this.direction;
     }
 
     public Iterable<IRocketPart> getParts() {
-        return null;
+        return this.parts;
     }
 
     public void updateRocket(Vector externalForce, double deltaTime) {

@@ -33,6 +33,6 @@ public class Vector {
     }
 
     public double dotProduct(Vector v) {
-        return this.x*v.x + this.y*v.y;
+        return this.x * v.x + this.y * v.y;
     }
 }
