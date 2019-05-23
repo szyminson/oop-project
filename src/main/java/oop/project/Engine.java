@@ -7,7 +7,7 @@ public class Engine implements IRocketPart {
 
     @Override
     public double getMass() {
-        return 0;
+        return this.mass;
     }
 
     @Override

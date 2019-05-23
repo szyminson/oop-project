@@ -6,16 +6,17 @@ public class FuelContainer implements IRocketPart {
     private double fuelMass;
 
     public double getRemainingFuel() {
-        return 0;
+
+        return this.fuelMass;
     }
 
     public void takeFuel(double amount) {
-
+        this.fuelMass -= amount;
     }
 
     @Override
     public double getMass() {
-        return 0;
+        return this.containerMass + this.fuelMass;
     }
 
     @Override
