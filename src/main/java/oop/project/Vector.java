@@ -1,5 +1,7 @@
 package oop.project;
 
+import java.util.Objects;
+
 public class Vector {
     private final double x, y;
 
@@ -44,8 +46,34 @@ public class Vector {
         return Math.sqrt(this.lengthSquared());
     }
 
+    public double getAngle() {
+        return Math.atan2(this.x, this.y);
+    }
+
     public Vector normalize() {
         double lengthInverse = 1.0 / this.length();
         return new Vector(this.x * lengthInverse, this.y * lengthInverse);
+    }
+
+    @Override
+    public String toString() {
+        return "Vector{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector vector = (Vector) o;
+        return Double.compare(vector.x, x) == 0 &&
+                Double.compare(vector.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }
