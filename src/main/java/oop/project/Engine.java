@@ -21,7 +21,7 @@ public class Engine implements IRocketPart {
 
     @Override
     public Vector createThrust(Vector direction, double time) {
-        if (fuelSource.getRemainingFuel() <= 0) {
+        if (this.fuelSource.getRemainingFuel() <= 0) {
             return new Vector(0, 0);
         }
         double lowerTime = -Double.MAX_VALUE;
@@ -31,7 +31,7 @@ public class Engine implements IRocketPart {
         double higherTimeThrust = 0;
 
         // find 2 time values, one higher and one lower than time, closest to time
-        for (Map.Entry<Double, Double> entry : thrustData.entrySet()) {
+        for (Map.Entry<Double, Double> entry : this.thrustData.entrySet()) {
             if (entry.getKey() == time) {
                 return direction.mul(entry.getValue());
             }
@@ -48,7 +48,7 @@ public class Engine implements IRocketPart {
         double thrustDifference = higherTimeThrust - lowerTimeThrust;
         double thrust = timeFraction * thrustDifference + lowerTimeThrust;
 
-        fuelSource.takeFuel(thrust); // TODO: scale by calculated factor
+        this.fuelSource.takeFuel(thrust); // TODO: scale by calculated factor
 
         return direction.mul(thrust);
     }

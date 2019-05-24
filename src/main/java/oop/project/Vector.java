@@ -9,11 +9,11 @@ public class Vector {
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public Vector add(Vector v) {
@@ -37,15 +37,15 @@ public class Vector {
     }
 
     public double lengthSquared() {
-        return x*x + y*y;
+        return this.x*this.x + this.y*this.y;
     }
 
     public double length() {
-        return Math.sqrt(lengthSquared());
+        return Math.sqrt(this.lengthSquared());
     }
 
     public Vector normalize() {
-        double lengthInverse = 1.0 / length();
-        return new Vector(x * lengthInverse, y * lengthInverse);
+        double lengthInverse = 1.0 / this.length();
+        return new Vector(this.x * lengthInverse, this.y * lengthInverse);
     }
 }

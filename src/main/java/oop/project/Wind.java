@@ -22,9 +22,9 @@ public class Wind implements IForceField {
     @Override
     public Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time) {
         // -0.5, * 2 == [0, 1] --> [-1, 1]
-        double randomX = (perlin.getValue(position.getX(), position.getY(), time) - 0.5) * 2 * strengthVariation;
-        double randomY = (perlin.getValue(position.getX(), position.getY(), -time) - 0.5) * 2 * strengthVariation;
+        double randomX = (this.perlin.getValue(position.getX(), position.getY(), time) - 0.5) * 2 * this.strengthVariation;
+        double randomY = (this.perlin.getValue(position.getX(), position.getY(), -time) - 0.5) * 2 * this.strengthVariation;
 
-        return new Vector(randomX, randomY).add(windForce);
+        return new Vector(randomX, randomY).add(this.windForce);
     }
 }

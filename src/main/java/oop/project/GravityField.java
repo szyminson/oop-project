@@ -11,7 +11,7 @@ public class GravityField implements IForceField {
     }
     @Override
     public Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time) {
-        Vector diff = sourcePosition.sub(position);
-        return diff.normalize().mul(mass * strength / diff.lengthSquared());
+        Vector diff = this.sourcePosition.sub(position);
+        return diff.normalize().mul(mass * this.strength / diff.lengthSquared());
     }
 }
