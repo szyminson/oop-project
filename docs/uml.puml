@@ -2,11 +2,12 @@
 
 interface IRocketPart {
   + double getMass()
-  + Vector createThrust(Vector rotation, double time)
+  + Vector createThrust(Vector direction, double time)
+  + double changeDirection(Vector currentDirection, double time)
 }
 
 interface IForceField {
-  + Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time)
+  + Vector getForce(Vector position, Vector direction, Vector velocity, double mass, double time)
 }
 
 class Wind {
@@ -35,6 +36,7 @@ IForceField <|-- AirResistance
 
 IRocketPart <|-- FuelContainer
 IRocketPart <|-- Engine
+IRocketPart <|-- RocketController
 
 Engine o- FuelContainer
 
@@ -49,6 +51,10 @@ class FuelContainer {
 
   + double getRemainingFuel()
   + void takeFuel(double amount)
+}
+
+class RocketController {
+  - Map<double, Vector> targetDirectionByTime
 }
 
 class World {
