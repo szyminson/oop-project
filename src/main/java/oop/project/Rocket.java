@@ -29,6 +29,6 @@ public class Rocket {
     }
 
     public void updateRocket(Vector externalForce, double deltaTime) {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

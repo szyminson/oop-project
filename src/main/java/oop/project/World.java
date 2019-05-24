@@ -7,6 +7,6 @@ public class World {
     private List<IForceField> forceFields;
 
     public void runSimulation() {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

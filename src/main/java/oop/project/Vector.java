@@ -35,4 +35,17 @@ public class Vector {
     public double dotProduct(Vector v) {
         return this.x * v.x + this.y * v.y;
     }
+
+    public double lengthSquared() {
+        return x*x + y*y;
+    }
+
+    public double length() {
+        return Math.sqrt(lengthSquared());
+    }
+
+    public Vector normalize() {
+        double lengthInverse = 1.0 / length();
+        return new Vector(x * lengthInverse, y * lengthInverse);
+    }
 }
