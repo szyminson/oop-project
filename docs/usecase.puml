@@ -1,0 +1,22 @@
+@startuml
+
+left to right direction
+
+rectangle system {
+  (Set the amount of fuel) as (setFuel)
+  (Set engine thrust data) as (setThrust)
+  (Configure gravity) as (setGravity)
+  (Configure wind speed) as (setWind)
+  (Set drag coefficient) as (setDrag)
+  (Set the target attitude) as (setEndCondition)
+  (Begin the simulation) as (runSimulation)
+}
+
+User --> (setFuel)
+User --> (setThrust)
+User --> (setGravity)
+User --> (setWind)
+User --> (setDrag)
+User --> (setEndCondition)
+User --> (runSimulation)
+@enduml
