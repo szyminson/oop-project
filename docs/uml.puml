@@ -2,7 +2,7 @@
 
 interface IRocketPart {
   + double getMass()
-  + Vector createThrust(Vector rotation)
+  + Vector createThrust(Vector rotation, double time)
 }
 
 interface IForceField {
