@@ -43,6 +43,7 @@ Engine o- FuelContainer
 class Engine {
   - double mass
   - FuelContainer fuelSource
+  - Map<double, double> thrustData
 }
 
 class FuelContainer {
