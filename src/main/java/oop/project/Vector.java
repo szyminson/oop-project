@@ -7,10 +7,14 @@ import java.util.Objects;
  * An implementation of mathematical vector in the project.
  */
 public class Vector {
+
+    /**
+     * Coordinates of this vector.
+     */
     private final double x, y;
 
     /**
-     * Sets x and y coordinates' of the vector.
+     * Sets x and y coordinates' of this vector.
      * @param x Vector coordinate.
      * @param y Vector coordinate.
      */
@@ -20,16 +24,14 @@ public class Vector {
     }
 
     /**
-     * Gives access to x coordinate from outside of the class.
-     * @return Returns x coordinate of the vector.
+     * @return x coordinate of this vector.
      */
     public double getX() {
         return this.x;
     }
 
     /**
-     * Gives access to y coordinate from outside of the class.
-     * @return Returns y coordinate of the vector.
+     * @return y coordinate of this vector.
      */
     public double getY() {
         return this.y;
@@ -80,23 +82,40 @@ public class Vector {
         return this.x * v.x + this.y * v.y;
     }
 
+    /**
+     * @return Squared length of this vector.
+     */
     public double lengthSquared() {
         return this.x*this.x + this.y*this.y;
     }
 
+    /**
+     * @return Length of this vector.
+     */
     public double length() {
         return Math.sqrt(this.lengthSquared());
     }
 
+    /**
+     * @return Angle of this vector.
+     */
     public double getAngle() {
         return Math.atan2(this.x, this.y);
     }
 
+    /**
+     * Normalizes this vector.
+     * @return New normalized vector object.
+     */
     public Vector normalize() {
         double lengthInverse = 1.0 / this.length();
         return new Vector(this.x * lengthInverse, this.y * lengthInverse);
     }
 
+    /**
+     * Creates string representation of this vector.
+     * @return String representation of this vector.
+     */
     @Override
     public String toString() {
         return "Vector{" +
@@ -105,6 +124,11 @@ public class Vector {
                 '}';
     }
 
+    /**
+     * Checks if this vector is equal to given object.
+     * @param o An object.
+     * @return Boolean value depending on the result.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,6 +138,10 @@ public class Vector {
                 Double.compare(vector.y, y) == 0;
     }
 
+    /**
+     * Generates hash code of this vector.
+     * @return Generated hash code.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
