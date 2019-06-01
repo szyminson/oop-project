@@ -2,11 +2,15 @@ package oop.project;
 
 
 public class FuelContainer implements IRocketPart {
-    private double containerMass;
+    private final double containerMass;
     private double fuelMass;
 
-    public double getRemainingFuel() {
+    public FuelContainer(double containerMass, double fuelMass) {
+        this.containerMass = containerMass;
+        this.fuelMass = fuelMass;
+    }
 
+    public double getRemainingFuel() {
         return this.fuelMass;
     }
 
@@ -17,10 +21,5 @@ public class FuelContainer implements IRocketPart {
     @Override
     public double getMass() {
         return this.containerMass + this.fuelMass;
-    }
-
-    @Override
-    public Vector createThrust(Vector rotation) {
-        return null;
     }
 }
