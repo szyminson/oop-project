@@ -38,8 +38,8 @@ public class Vector {
     }
 
     /**
-     * Adds other vector to this vector.
-     * @param v Other vector object.
+     * Adds given vector to this vector.
+     * @param v Given vector object.
      * @return Sum of two vectors.
      */
     public Vector add(Vector v) {
@@ -47,8 +47,8 @@ public class Vector {
     }
 
     /**
-     * Subtracts other vector from this vector.
-     * @param v Other vector object.
+     * Subtracts given vector from this vector.
+     * @param v Given vector object.
      * @return Difference between two vectors.
      */
     public Vector sub(Vector v) {
@@ -74,8 +74,8 @@ public class Vector {
     }
 
     /**
-     * Scalar multiplication of this vector and other vector.
-     * @param v Other vector object.
+     * Scalar multiplication of this vector by given vector.
+     * @param v Given vector object.
      * @return A number, scalar product of multiplication.
      */
     public double dotProduct(Vector v) {
@@ -105,7 +105,7 @@ public class Vector {
 
     /**
      * Normalizes this vector.
-     * @return New normalized vector object.
+     * @return New, normalized vector object.
      */
     public Vector normalize() {
         double lengthInverse = 1.0 / this.length();
@@ -113,7 +113,7 @@ public class Vector {
     }
 
     /**
-     * Creates string representation of this vector.
+     * Creates a string representation of this vector.
      * @return String representation of this vector.
      */
     @Override
@@ -125,8 +125,8 @@ public class Vector {
     }
 
     /**
-     * Checks if this vector is equal to given object.
-     * @param o An object.
+     * Checks whether this vector is equal to given object.
+     * @param o Given object.
      * @return Boolean value depending on the result.
      */
     @Override
@@ -139,7 +139,7 @@ public class Vector {
     }
 
     /**
-     * Generates hash code of this vector.
+     * Generates a hash code of this vector.
      * @return Generated hash code.
      */
     @Override
