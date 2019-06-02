@@ -14,7 +14,7 @@ public class Vector {
     private final double x, y;
 
     /**
-     * Sets x and y coordinates' of this vector.
+     * Sets x and y coordinates of this vector.
      * @param x Vector coordinate.
      * @param y Vector coordinate.
      */
@@ -24,6 +24,7 @@ public class Vector {
     }
 
     /**
+     * Gets x coordinate of this vector.
      * @return x coordinate of this vector.
      */
     public double getX() {
@@ -31,6 +32,7 @@ public class Vector {
     }
 
     /**
+     * Gets y coordinate of this vector.
      * @return y coordinate of this vector.
      */
     public double getY() {
@@ -83,6 +85,7 @@ public class Vector {
     }
 
     /**
+     * Gets squared length of this vector.
      * @return Squared length of this vector.
      */
     public double lengthSquared() {
@@ -90,6 +93,7 @@ public class Vector {
     }
 
     /**
+     * Gets length of this vector.
      * @return Length of this vector.
      */
     public double length() {
@@ -97,6 +101,7 @@ public class Vector {
     }
 
     /**
+     * Gets angle of this vector.
      * @return Angle of this vector.
      */
     public double getAngle() {
