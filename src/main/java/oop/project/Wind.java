@@ -3,14 +3,32 @@ package oop.project;
 
 import com.flowpowered.noise.module.source.Perlin;
 
+/**
+ * An implementation of wind as an external factor in the project.
+ */
 public class Wind implements IForceField {
+    /**
+     * Strength variation of this Wind.
+     */
     private final double strengthVariation;
+    /**
+     * Force of this Wind.
+     */
     private final Vector windForce;
 
+    /**
+     * Perlin noise of this Wind.
+     */
     private final Perlin perlin;
     private final double surfaceAirPressure;
     private final GravityField gravityObject;
 
+    /**
+     * Sets strengthVariation and windForce using given parameters and generates perlin noise of this Wind using Perlin class.
+     *
+     * @param strengthVariation Given variation of strength.
+     * @param windForce         Given force of wind.
+     */
     public Wind(double strengthVariation, Vector windForce, double surfaceAirPressure, GravityField gravity) {
         this.strengthVariation = strengthVariation;
         this.windForce = windForce;
@@ -23,6 +41,16 @@ public class Wind implements IForceField {
         this.perlin.setSeed((int) System.currentTimeMillis());
     }
 
+    /**
+     * Calculates force of this Wind using given parameters.
+     *
+     * @param position Given position.
+     * @param rotation Given rotation.
+     * @param velocity Given velocity.
+     * @param mass     Given mass.
+     * @param time     Given time.
+     * @return Calculated force.
+     */
     @Override
     public Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time) {
         // this is not a physically accurate computation of wind,

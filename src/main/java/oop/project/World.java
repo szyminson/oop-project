@@ -4,7 +4,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class World {
+    /**
+     * Rocket object.
+     */
     private Rocket rocket;
+    /**
+     * A list of force fields present in this simulated World.
+     */
     private List<IForceField> forceFields;
     private Predicate<World> endCondition;
 
@@ -33,6 +39,9 @@ public class World {
         return time;
     }
 
+    /**
+     * Runs the simulations.
+     */
     public void runSimulation() {
         while (!endCondition.test(this)) {
             Vector directionVector = new Vector(Math.cos(rocket.getDirection()), Math.sin(rocket.getDirection()));
