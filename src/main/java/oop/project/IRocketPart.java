@@ -2,7 +2,13 @@ package oop.project;
 
 
 public interface IRocketPart {
-    public double getMass();
+    double getMass();
 
-    public Vector createThrust(Vector rotation);
+    default Vector createThrust(Vector direction, double time) {
+        return new Vector(0, 0);
+    }
+
+    default double changeDirection(Vector currentDirection, double time) {
+        return 0;
+    }
 }

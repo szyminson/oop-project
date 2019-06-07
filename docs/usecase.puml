@@ -1,0 +1,43 @@
+@startuml
+
+left to right direction
+
+rectangle system {
+  (Configure simulation) as (config)
+    (Configure environment) as (configEnv)
+      (Set wind properties) as (configWind)
+      (Configure gravity sources) as (configGravity)
+      (Set air friction) as (configAirFriction)
+    (Configure rocket) as (configRocket)
+      (Set engine mass and thrust) as (configEngine)
+      (Set fuel mass) as (configFuel)
+      (Configure flight path) as (flightPath)
+    (Configure end conditions) as (configEnd)
+      (Enter target altitude) as (maxHeight)
+      (Enter max time) as (maxTime)
+  (Run simulation) as (runSimulation)
+    (Start rocket) as (startRocket)
+  (View simulation progress and end result) as (viewSimulation)
+}
+
+config .> configEnv : <<includes>>
+config ..> configRocket : <<includes>>
+config ..> configEnd : <<includes>>
+
+configEnv ..> configWind : <<includes>>
+configEnv ..> configGravity : <<includes>>
+configEnv ..> configAirFriction : <<includes>>
+
+configRocket ..> configEngine : <<includes>>
+configRocket ..> configFuel : <<includes>>
+configRocket ..> flightPath : <<includes>>
+
+configEnd ..> maxHeight : <<includes>>
+configEnd ..> maxTime : <<includes>>
+
+runSimulation ..> startRocket : <<includes>>
+
+User -- (config) : step 1
+User -- (runSimulation) : step 2
+User -- (viewSimulation) : step 3
+@enduml
