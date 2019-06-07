@@ -62,13 +62,13 @@ class SimulationViewPanel extends JPanel {
         g.setColor(Color.BLUE);
 
         double alpha = -rocket.getDirection();
-        Vector forward = new Vector(cos(alpha), -sin(alpha)).mul(9);
+        Vector forward = new Vector(cos(alpha), sin(alpha)).mul(11);
 
         alpha += Math.PI / 2;
-        Vector left = new Vector(cos(alpha), -sin(alpha)).mul(4);
+        Vector left = new Vector(cos(alpha), sin(alpha)).mul(4);
 
         alpha += Math.PI;
-        Vector right = new Vector(cos(alpha), -sin(alpha)).mul(4);
+        Vector right = new Vector(cos(alpha), sin(alpha)).mul(4);
 
         g.drawLine((int) forward.getX() + rocketX, (int) forward.getY() + rocketY,
                 (int) left.getX() + rocketX, (int) left.getY() + rocketY);
@@ -83,7 +83,7 @@ class SimulationViewPanel extends JPanel {
     private void drawGrid(Graphics g, double gridSize, double scale, double centerX, double centerY) {
         int count = 30;
         for (int i = -count; i < count; i++) {
-            double x = (Math.floor(i - centerX / gridSize) * gridSize + centerX) * scale;
+            double x = (Math.floor(i + centerX / gridSize) * gridSize - centerX) * scale;
             g.drawLine((int) Math.ceil(x) + getWidth() / 2, 0, (int) Math.ceil(x) + getWidth() / 2, getHeight());
         }
 
