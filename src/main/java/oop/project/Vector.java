@@ -105,7 +105,7 @@ public class Vector {
      * @return Angle of this vector.
      */
     public double getAngle() {
-        return Math.atan2(this.x, this.y);
+        return Math.atan2(this.y, this.x);
     }
 
     /**
