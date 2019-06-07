@@ -9,6 +9,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class SimulatorGui extends JFrame {
 
@@ -34,6 +35,10 @@ public class SimulatorGui extends JFrame {
     private static final double DEFAULT_WIND_STRENGTH = 0;
     private static final double DEFAULT_WIND_VARIATION = 0.001;
     private static final double DEFAULT_SURFACE_AIR_PRESSURE = 100_000;
+    private static final double DEFAULT_TIME_STEP = 0.001;
+    private static final double DEFAULT_MAX_TIME = 10000;
+    private static final double DEFAULT_TARGET_ALTITUDE = 100000;
+
 
     private JTextField engineMass;
     private JTextField fuelMass;
@@ -52,6 +57,12 @@ public class SimulatorGui extends JFrame {
     private JLabel externalForcesLabel;
     private JLabel positionLabel;
     private JLabel directionLabel;
+
+    private JTextField timeStep;
+    private JTextField maxTime;
+    private JTextField maxDistance;
+
+    private volatile boolean simulationRunning = false;
 
     public SimulatorGui() throws HeadlessException {
         super("Rocket Simulator");
@@ -79,14 +90,9 @@ public class SimulatorGui extends JFrame {
 
         JPanel viewContainer = new JPanel();
 
-        JButton start = new JButton("Start");
-        start.addActionListener(e -> startSimulation(viewContainer));
-        constraints.gridx = 0;
-        panel.add(start, constraints);
-
         timeLabel = new JLabel("Time:");
-        constraints.gridy++;
         constraints.gridx = 0;
+        constraints.weightx = 1;
         panel.add(timeLabel, constraints);
 
         externalForcesLabel = new JLabel("External forces:");
@@ -109,10 +115,78 @@ public class SimulatorGui extends JFrame {
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weighty = 1;
         panel.add(viewContainer, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridheight = constraints.gridy + 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1;
+        JPanel sidePanel = new JPanel();
+        panel.add(sidePanel, constraints);
+        sidePanel.setPreferredSize(new Dimension(250, 200));
+        sidePanel.setLayout(new GridBagLayout());
+        {
+
+            JButton start = new JButton("Start");
+            start.addActionListener(e -> startSimulation(viewContainer));
+            constraints.weightx = 1;
+            constraints.weighty = 0;
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.gridwidth = 2;
+            constraints.gridheight = 1;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            sidePanel.add(start, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy++;
+            JButton stop = new JButton("Stop");
+            stop.addActionListener(e -> stopSimulation());
+            sidePanel.add(stop, constraints);
+
+            constraints.gridwidth = 1;
+
+            constraints.gridx = 0;
+            constraints.gridy++;
+            sidePanel.add(new JLabel("Time step"), constraints);
+            timeStep = new JTextField(String.valueOf(DEFAULT_TIME_STEP));
+            constraints.gridx = 1;
+            sidePanel.add(timeStep, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy++;
+            sidePanel.add(new JLabel("Stop time"), constraints);
+            maxTime = new JTextField(String.valueOf(DEFAULT_MAX_TIME));
+            constraints.gridx = 1;
+            sidePanel.add(maxTime, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy++;
+            sidePanel.add(new JLabel("Target altitude"), constraints);
+            maxDistance = new JTextField(String.valueOf(DEFAULT_TARGET_ALTITUDE));
+            constraints.gridx = 1;
+            sidePanel.add(maxDistance, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy++;
+            constraints.gridwidth = 2;
+            constraints.weighty = 1;
+            constraints.fill = GridBagConstraints.BOTH;
+            sidePanel.add(new JPanel(), constraints);
+        }
+
         return panel;
     }
 
+    private void stopSimulation() {
+        simulationRunning = false;
+    }
+
     private void startSimulation(JPanel viewContainer) {
+        if (simulationRunning) {
+            return;
+        }
+        simulationRunning = true;
         List<GravityField> gravityFields = new ArrayList<>();
         for (int i = 0; i < gravitySources.getRowCount(); i++) {
             String x = gravitySources.getModel().getValueAt(i, 1).toString();
@@ -169,13 +243,30 @@ public class SimulatorGui extends JFrame {
         viewContainer.add(new SimulationViewPanel(rocket, gravityFields));
         viewContainer.repaint();
 
+        GravityField mainGravityField = gravityFields.get(0);
+
+        double maxTime = Double.parseDouble(this.maxTime.getText());
+        double maxDistance = Double.parseDouble(this.maxDistance.getText());
+        double timeStep = Double.parseDouble(this.timeStep.getText());
+
         SwingWorker<?, ?> swingWorker = new SwingWorker<Object, Object>() {
             private long lastUpdate = System.currentTimeMillis();
             private World world;
+            private boolean hasStartedOffPlanet = false;
 
             @Override
             protected Object doInBackground() {
-                world = new World(rocket, forces, w -> w.getTime() > 100000, 0.0001, () -> {
+                Predicate<World> endCondition = w -> {
+                    double distanceFromSurface = rocket.getPosition().sub(mainGravityField.getSourcePosition()).length() - mainGravityField.getRadius();
+                    if (distanceFromSurface > 0) {
+                        hasStartedOffPlanet = true;
+                    }
+                    return !simulationRunning
+                            || w.getTime() > maxTime
+                            || (hasStartedOffPlanet && distanceFromSurface < 0)
+                            || distanceFromSurface > maxDistance;
+                };
+                world = new World(rocket, forces, endCondition, timeStep, () -> {
                     if (System.currentTimeMillis() - lastUpdate > 100) {
                         viewContainer.revalidate();
                         viewContainer.repaint();
