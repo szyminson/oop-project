@@ -69,6 +69,7 @@ public class SimulationLogger implements AutoCloseable {
      */
     public void log(double time, double rocketMass, double fuelMass, Vector rocketPosition, Vector rocketDirection, Vector rocketVelocity, Vector windDirection, Vector windForce, Vector gravityFieldDirection, Vector gravityFieldForce, Vector airResistanceDirection, Vector airResistanceForce) {
         NumberFormat nf = NumberFormat.getNumberInstance(this.lcl);
+        nf.setGroupingUsed(false);
         this.writer.println(nf.format(time) +
                 ',' + nf.format(rocketMass) +
                 ',' + nf.format(fuelMass) +
