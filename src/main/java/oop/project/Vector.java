@@ -9,9 +9,13 @@ import java.util.Objects;
 public class Vector {
 
     /**
-     * Coordinates of this Vector.
+     * Coordinate x of this Vector.
      */
-    private final double x, y;
+    private final double x;
+    /**
+     * Coordinate y of this Vector.
+     */
+    private final double y;
 
     /**
      * Sets x and y coordinates of this Vector.

@@ -8,10 +8,16 @@ import java.util.Map;
  */
 public class Engine implements IRocketPart {
     /**
-     * Parameters of this Engine
+     * Mass of this Engine.
      */
     private final double mass;
+    /**
+     * Fuel source of this Engine.
+     */
     private final FuelContainer fuelSource;
+    /**
+     * Thrust data of this Engine.
+     */
     private final Map<Double, Double> thrustData;
 
     /**

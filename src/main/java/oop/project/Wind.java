@@ -7,9 +7,18 @@ import com.flowpowered.noise.module.source.Perlin;
  * An implementation of wind as an external factor in the project.
  */
 public class Wind implements IForceField {
+    /**
+     * Strength variation of this Wind.
+     */
     private double strengthVariation;
+    /**
+     * Force of this Wind.
+     */
     private Vector windForce;
 
+    /**
+     * Perlin noise of this Wind.
+     */
     private final Perlin perlin;
 
     /**

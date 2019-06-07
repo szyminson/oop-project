@@ -7,9 +7,12 @@ package oop.project;
 public class GravityField implements IForceField {
 
     /**
-     * Parameters of this GravityField
+     * Strength of this GravityField.
      */
     private final double strength;
+    /**
+     * Source position of this GravityField.
+     */
     private final Vector sourcePosition;
 
     /**

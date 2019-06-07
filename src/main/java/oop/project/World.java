@@ -4,9 +4,12 @@ import java.util.List;
 
 public class World {
     /**
-     * Parameters of this World.
+     * Rocket object.
      */
     private Rocket rocket;
+    /**
+     * A list of force fields present in this simulated World.
+     */
     private List<IForceField> forceFields;
 
     /**
