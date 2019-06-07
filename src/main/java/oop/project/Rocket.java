@@ -54,9 +54,9 @@ public class Rocket {
         // check for 0 because otherwise it would change direction due to precision errors
         if (directionChange != 0) {
             // convert to polar coordinates, change angle, and back to x/y
-            double φ = this.direction.getAngle() + directionChange;
+            double fi = this.direction.getAngle() + directionChange;
             double r = this.direction.length();
-            this.direction = new Vector(r * Math.cos(φ), r * Math.sin(φ));
+            this.direction = new Vector(r * Math.cos(fi), r * Math.sin(fi));
         }
     }
 }
