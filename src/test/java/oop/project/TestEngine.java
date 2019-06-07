@@ -17,8 +17,8 @@ public class TestEngine {
         thrustMap.put(1.0, 2.0);
         thrustMap.put(3.0, 3.0);
         Engine engine = new Engine(1, new FuelContainer(1, Double.MAX_VALUE), thrustMap);
-        assertEquals(1.5, engine.createThrust(direction, 0.5).length(), delta);
-        assertEquals(2.5, engine.createThrust(direction, 2).length(), delta);
+        assertEquals(1.5, engine.createThrust(direction, 0.5, 0).length(), delta);
+        assertEquals(2.5, engine.createThrust(direction, 2, 0).length(), delta);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TestEngine {
         Map<Double, Double> thrustMap = new HashMap<>();
         thrustMap.put(0.0, 1.0);
         Engine engine = new Engine(1, new FuelContainer(1, Double.MAX_VALUE), thrustMap);
-        assertEquals(1.0, engine.createThrust(direction, 0.5).length(), delta);
-        assertEquals(1.0, engine.createThrust(direction, 2).length(), delta);
+        assertEquals(1.0, engine.createThrust(direction, 0.5, 0).length(), delta);
+        assertEquals(1.0, engine.createThrust(direction, 2, 0).length(), delta);
     }
 }

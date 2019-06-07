@@ -38,7 +38,7 @@ public class Rocket {
     public void updateRocket(Vector externalForce, double time, double deltaTime) {
         Vector directionVector = new Vector(Math.cos(direction), Math.sin(direction));
         Vector totalThrust = parts.stream()
-                .map(p -> p.createThrust(directionVector, time))
+                .map(p -> p.createThrust(directionVector, time, deltaTime))
                 .reduce(Vector::add).orElse(new Vector(0, 0))
                 .add(externalForce);
         double directionChange = parts.stream().mapToDouble(p -> p.changeDirection(direction, time)).sum();

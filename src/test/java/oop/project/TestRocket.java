@@ -21,7 +21,7 @@ public class TestRocket {
             }
 
             @Override
-            public Vector createThrust(Vector direction, double time) {
+            public Vector createThrust(Vector direction, double time, double deltaTime) {
                 return direction;
             }
         };

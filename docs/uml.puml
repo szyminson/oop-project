@@ -21,7 +21,7 @@ class GravityField {
 }
 
 class AirResistance {
-  - double dragCoefficient
+  - double dragConstant
 }
 
 
