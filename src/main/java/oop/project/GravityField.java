@@ -40,7 +40,6 @@ public class GravityField implements IForceField {
      * @param velocity Given velocity.
      * @param mass     Given mass.
      * @param time     Given time.
-
      * @return Calculated force.
      */
     @Override
@@ -49,10 +48,20 @@ public class GravityField implements IForceField {
         return diff.normalize().mul(mass * this.strength / diff.lengthSquared());
     }
 
+    /**
+     * Gets radius of this GravityField.
+     *
+     * @return This GravityField's radius.
+     */
     public double getRadius() {
         return radius;
     }
 
+    /**
+     * Gets sourcePosition of this GravityField.
+     *
+     * @return This GravityField's sourcePosition.
+     */
     public Vector getSourcePosition() {
         return sourcePosition;
     }

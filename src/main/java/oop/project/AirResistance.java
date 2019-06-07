@@ -1,5 +1,8 @@
 package oop.project;
 
+/**
+ * An implementation of air resistance in the project.
+ */
 public class AirResistance implements IForceField {
     /**
      * Constant for the simulated rocket that specifies air drag.
@@ -20,9 +23,9 @@ public class AirResistance implements IForceField {
     /**
      * Sets dragConstant, surfaceAirPressure and gravity of this AirResistance.
      *
-     * @param dragConstant Given drag constant. See {@link #dragConstant}
+     * @param dragConstant       Given drag constant. See {@link #dragConstant}
      * @param surfaceAirPressure Air pressure at the surface
-     * @param gravity Gravity source
+     * @param gravity            Gravity source
      */
     public AirResistance(double dragConstant, double surfaceAirPressure, GravityField gravity) {
         this.dragConstant = dragConstant;
