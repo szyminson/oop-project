@@ -26,3 +26,17 @@ gradlew	run
 
 ```
 ./gradlew run
+```
+## Generate docs
+
+### Windows:
+
+```
+gradlew	javadoc
+```
+
+### Linux/Mac:
+
+```
+./gradlew javadoc
+```
