@@ -9,6 +9,9 @@ build
 *.iml
 .vscode
 
+# Ignore application log files
+simulation-log*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
