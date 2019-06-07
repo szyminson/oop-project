@@ -48,7 +48,7 @@ public class SimulationLogger implements AutoCloseable {
                 "airResistanceDirectionX," +
                 "airResistanceDirectionY," +
                 "airResistanceForceX," +
-                "airResistanceForceY,");
+                "airResistanceForceY");
     }
 
     /**

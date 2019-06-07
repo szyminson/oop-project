@@ -17,7 +17,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "oop.project.App"
+    mainClassName = "oop.project.Main"
 }
 
 java {

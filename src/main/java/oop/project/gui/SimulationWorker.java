@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,6 +34,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
     private final Consumer<String> describeGravity;
     private final Consumer<String> describeWind;
     private final Consumer<String> describeDirection;
+    private final FuelContainer fuelContainer;
 
     private long lastUpdate = System.currentTimeMillis();
     private World world;
@@ -43,6 +46,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
 
     private double loggingInterval;
 
+    private SimulationLogger logger;
     SimulationWorker(Builder builder) {
         this.gravityFields = builder.gravityFields;
         for (GravityField field : gravityFields) {
@@ -57,7 +61,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         this.allForces.addAll(windFields);
         this.allForces.addAll(airResistanceFields);
 
-        FuelContainer fuelContainer = new FuelContainer(builder.fuelContainerMass, builder.fuelMass);
+        fuelContainer = new FuelContainer(builder.fuelContainerMass, builder.fuelMass);
         Engine engine = new Engine(builder.engineMass, fuelContainer, builder.thrust);
         RocketController controller = new RocketController(builder.path);
         this.rocket = new Rocket(Arrays.asList(fuelContainer, engine, controller), new Vector(0, 0), Math.PI / 2);
@@ -92,10 +96,42 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         this.describeGravity = builder.describeGravity;
         this.describeWind = builder.describeWind;
         this.describeDirection = builder.describeDirection;
+
+        if (builder.createLogFile) {
+            String time = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").format(new Date());
+            try {
+                this.logger = new SimulationLogger("simulation-log" +  time + ".csv");
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Error writing log file " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void logStatus(World world) {
+        if (logger != null) {
+            Vector position = world.getRocket().getPosition();
+            double direction = world.getRocket().getDirection();
+            Vector directionVector = new Vector(Math.cos(direction), Math.sin(direction));
+            Vector velocity = world.getRocket().getVelocity();
 
+            Vector gravityForces = gravityFields.stream()
+                    .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
+                    .reduce(Vector::add).orElse(new Vector(0, 0));
+
+            Vector windForces = windFields.stream().filter(f -> !gravityFields.contains(f))
+                    .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
+                    .reduce(Vector::add).orElse(new Vector(0, 0));
+
+            Vector airResistanceForces = airResistanceFields.stream().filter(f -> !gravityFields.contains(f))
+                    .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
+                    .reduce(Vector::add).orElse(new Vector(0, 0));
+
+
+            logger.log(world.getTime(), rocket.getMass(), fuelContainer.getRemainingFuel(), position,
+                    directionVector, velocity,
+                    windForces.normalize(), windForces, gravityForces.normalize(), gravityForces,
+                    airResistanceForces.normalize(), airResistanceForces);
+        }
     }
 
     private boolean testEndSimulation(World world) {
@@ -107,33 +143,34 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         }
         if (!simulationRunning) {
             System.out.println("Simulation stopped by user");
-            updateHandler();
-            logStatus(world);
-            stopSimulation();
+            onClose();
             return true;
         }
         if (world.getTime() > maxTime) {
             System.out.println("Simulation stopped: ran out of time");
-            updateHandler();
-            logStatus(world);
-            stopSimulation();
+            onClose();
             return true;
         }
         if (hasStartedOffPlanet) if (distanceFromSurface < 0) {
             System.out.println("Simulation stopped: touched ground");
-            updateHandler();
-            logStatus(world);
-            stopSimulation();
+            onClose();
             return true;
         }
         if (distanceFromSurface > maxAltitude) {
             System.out.println("Simulation stopped: exceeded max altitude");
-            updateHandler();
-            logStatus(world);
-            stopSimulation();
+            onClose();
             return true;
         }
         return false;
+    }
+
+    private void onClose() {
+        updateHandler();
+        logStatus(world);
+        stopSimulation();
+        if (logger != null) {
+            logger.close();
+        }
     }
 
     private void updateHandler() {
@@ -212,6 +249,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         private Consumer<String> describeTime;
         private Consumer<String> describeDirection;
         private double logInterval;
+        private boolean createLogFile;
 
 
         Builder gravitySources(TableModel gravitySources) {
@@ -352,6 +390,11 @@ class SimulationWorker extends SwingWorker<Object, Object> {
 
         Builder loggingInverval(String text) {
             this.logInterval = Double.parseDouble(text);
+            return this;
+        }
+
+        Builder createLogFile(boolean createLog) {
+            this.createLogFile = createLog;
             return this;
         }
 

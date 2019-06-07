@@ -63,6 +63,8 @@ public class SimulatorGui extends JFrame {
     private JTextField maxDistance;
     private JTextField loggingInterval;
 
+    private JCheckBox createLog;
+
     private volatile boolean simulationRunning = false;
     private SimulationWorker simulationnWorker;
 
@@ -197,6 +199,14 @@ public class SimulatorGui extends JFrame {
             constraints.gridx = 1;
             sidePanel.add(loggingInterval, constraints);
 
+            constraints.gridy++;
+            createLog = new JCheckBox("Create log");
+            constraints.gridx = 0;
+            constraints.gridwidth = 2;
+            sidePanel.add(createLog, constraints);
+
+            constraints.gridwidth = 1;
+
             constraints.gridx = 0;
             constraints.gridy++;
             constraints.gridwidth = 2;
@@ -242,6 +252,7 @@ public class SimulatorGui extends JFrame {
                 .describeWind(windLabel::setText)
                 .describeVelocity(velocityLabel::setText)
                 .loggingInverval(loggingInterval.getText())
+                .createLogFile(createLog.isSelected())
                 .build();
         simulationnWorker.execute();
     }
