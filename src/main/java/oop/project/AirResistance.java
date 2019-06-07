@@ -21,6 +21,7 @@ public class AirResistance implements IForceField {
         this.dragConstant = dragConstant;
         this.surfaceAirPressure = surfaceAirPressure;
         this.gravityObject = gravity;
+
     }
 
     /**
