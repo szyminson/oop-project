@@ -61,6 +61,7 @@ public class SimulatorGui extends JFrame {
     private JTextField timeStep;
     private JTextField maxTime;
     private JTextField maxDistance;
+    private JTextField loggingInterval;
 
     private volatile boolean simulationRunning = false;
 
@@ -190,6 +191,13 @@ public class SimulatorGui extends JFrame {
 
             constraints.gridx = 0;
             constraints.gridy++;
+            sidePanel.add(new JLabel("Log interval"), constraints);
+            loggingInterval = new JTextField("10");
+            constraints.gridx = 1;
+            sidePanel.add(loggingInterval, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy++;
             constraints.gridwidth = 2;
             constraints.weighty = 1;
             constraints.fill = GridBagConstraints.BOTH;
@@ -231,6 +239,7 @@ public class SimulatorGui extends JFrame {
                 .describeTime(timeLabel::setText)
                 .describeWind(windLabel::setText)
                 .describeVelocity(velocityLabel::setText)
+                .loggingInverval(loggingInterval.getText())
                 .build();
         swingWorker.execute();
     }

@@ -37,10 +37,11 @@ class SimulationWorker extends SwingWorker<Object, Object> {
     private World world;
     private boolean hasStartedOffPlanet = false;
     private boolean simulationRunning = true;
+    private double lastLogTime = Double.NEGATIVE_INFINITY;
 
     private SimulationViewPanel viewPanel;
 
-
+    private double loggingInterval;
     SimulationWorker(Builder builder) {
         this.gravityFields = builder.gravityFields;
         for (GravityField field : gravityFields) {
@@ -66,6 +67,10 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         this.timeStep = builder.timeStep;
 
         this.world = new World(rocket, allForces, this::testEndSimulation, timeStep, () -> {
+            if (world.getTime() - lastLogTime >= loggingInterval) {
+                logStatus(world);
+                lastLogTime = world.getTime();
+            }
             if (System.currentTimeMillis() - lastUpdate > 100) {
                 updateHandler();
             }
@@ -76,6 +81,8 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         builder.viewPanelContainer.setLayout(new CardLayout());
         builder.viewPanelContainer.add(this.viewPanel);
 
+        this.loggingInterval = builder.logInterval;
+
         this.describeTime = builder.describeTime;
         this.describePosition = builder.describePosition;
         this.describeAirResistance = builder.describeAirResistance;
@@ -84,6 +91,10 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         this.describeGravity = builder.describeGravity;
         this.describeWind = builder.describeWind;
         this.describeDirection = builder.describeDirection;
+    }
+
+    private void logStatus(World world) {
+
     }
 
     private boolean testEndSimulation(World world) {
@@ -96,21 +107,25 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         if (!simulationRunning) {
             System.out.println("Simulation stopped by user");
             updateHandler();
+            logStatus(world);
             return true;
         }
         if (world.getTime() > maxTime) {
             System.out.println("Simulation stopped: ran out of time");
             updateHandler();
+            logStatus(world);
             return true;
         }
         if (hasStartedOffPlanet) if (distanceFromSurface < 0) {
             System.out.println("Simulation stopped: touched ground");
             updateHandler();
+            logStatus(world);
             return true;
         }
         if (distanceFromSurface > maxAltitude) {
             System.out.println("Simulation stopped: exceeded max altitude");
             updateHandler();
+            logStatus(world);
             return true;
         }
         return false;
@@ -187,6 +202,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         private Consumer<String> describeAirResistance;
         private Consumer<String> describeTime;
         private Consumer<String> describeDirection;
+        private double logInterval;
 
 
         Builder gravitySources(TableModel gravitySources) {
@@ -322,6 +338,11 @@ class SimulationWorker extends SwingWorker<Object, Object> {
 
         Builder describeDirection(Consumer<String> consumer) {
             this.describeDirection = consumer;
+            return this;
+        }
+
+        Builder loggingInverval(String text) {
+            this.logInterval = Double.parseDouble(text);
             return this;
         }
 
