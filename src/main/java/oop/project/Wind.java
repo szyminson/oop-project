@@ -21,6 +21,7 @@ public class Wind implements IForceField {
 
     /**
      * Perlin noise of this Wind.
+     * Used to generate random, but continuously changing wind speed.
      */
     private final Perlin perlin;
 

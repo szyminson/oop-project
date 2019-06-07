@@ -15,6 +15,9 @@ public class GravityField implements IForceField {
      */
     private final Vector sourcePosition;
 
+    /**
+     * Radius of the gravity source.
+     */
     private final double radius;
 
     /**
