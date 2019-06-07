@@ -1,12 +1,23 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     java
     application
+    id("com.github.johnrengelman.shadow").version("5.0.0")
 }
 
 
 repositories {
     jcenter()
     maven { setUrl("https://oss.sonatype.org/content/repositories/public/") }
+}
+
+tasks {
+    "shadowJar"(ShadowJar::class) {
+        baseName = project.name
+        classifier = null
+        version = null
+    }
 }
 
 dependencies {
