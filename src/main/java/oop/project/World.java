@@ -3,6 +3,7 @@ package oop.project;
 import java.util.List;
 import java.util.function.Predicate;
 
+
 public class World {
     /**
      * Rocket object.
@@ -40,7 +41,7 @@ public class World {
     }
 
     /**
-     * Runs the simulations.
+     * Runs the simulation.
      */
     public void runSimulation() {
         while (!endCondition.test(this)) {

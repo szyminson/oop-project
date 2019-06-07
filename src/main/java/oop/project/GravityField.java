@@ -14,6 +14,7 @@ public class GravityField implements IForceField {
      * Source position of this GravityField.
      */
     private final Vector sourcePosition;
+
     private final double radius;
 
     /**
@@ -29,13 +30,14 @@ public class GravityField implements IForceField {
     }
 
     /**
-     * Calculates this GravityField's force using given parameters.
+     * Calculates force of this GravityField using given parameters.
      *
      * @param position Given position.
      * @param rotation Given rotation.
      * @param velocity Given velocity.
      * @param mass     Given mass.
      * @param time     Given time.
+
      * @return Calculated force.
      */
     @Override
