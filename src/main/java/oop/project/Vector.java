@@ -9,12 +9,17 @@ import java.util.Objects;
 public class Vector {
 
     /**
-     * Coordinates of this vector.
+     * Coordinate x of this Vector.
      */
-    private final double x, y;
+    private final double x;
+    /**
+     * Coordinate y of this Vector.
+     */
+    private final double y;
 
     /**
-     * Sets x and y coordinates of this vector.
+     * Sets x and y coordinates of this Vector.
+     *
      * @param x Vector coordinate.
      * @param y Vector coordinate.
      */
@@ -24,60 +29,67 @@ public class Vector {
     }
 
     /**
-     * Gets x coordinate of this vector.
-     * @return x coordinate of this vector.
+     * Gets x coordinate of this Vector.
+     *
+     * @return x coordinate of this Vector.
      */
     public double getX() {
         return this.x;
     }
 
     /**
-     * Gets y coordinate of this vector.
-     * @return y coordinate of this vector.
+     * Gets y coordinate of this Vector.
+     *
+     * @return y coordinate of this Vector.
      */
     public double getY() {
         return this.y;
     }
 
     /**
-     * Adds given vector to this vector.
-     * @param v Given vector object.
-     * @return Sum of two vectors.
+     * Adds given Vector to this Vector.
+     *
+     * @param v Given Vector object.
+     * @return Sum of two Vectors.
      */
     public Vector add(Vector v) {
         return new Vector(this.x + v.x, this.y + v.y);
     }
 
     /**
-     * Subtracts given vector from this vector.
-     * @param v Given vector object.
-     * @return Difference between two vectors.
+     * Subtracts given Vector from this Vector.
+     *
+     * @param v Given Vector object.
+     * @return Difference between two Vectors.
      */
     public Vector sub(Vector v) {
         return new Vector(this.x - v.x, this.y - v.y);
     }
 
     /**
-     * Multiplies this vector by given number.
+     * Multiplies this Vector by given number.
+     *
      * @param d Number.
-     * @return This vector multiplied.
+     * @return This Vector multiplied.
      */
     public Vector mul(double d) {
         return new Vector(this.x * d, this.y * d);
     }
 
     /**
-     * Divides this vector by given number.
+     * Divides this Vector by given number.
+     *
      * @param d Number.
-     * @return This vector divided.
+     * @return This Vector divided.
      */
     public Vector div(double d) {
         return new Vector(this.x / d, this.y / d);
     }
 
     /**
-     * Scalar multiplication of this vector by given vector.
-     * @param v Given vector object.
+     * Scalar multiplication of this Vector by given Vector.
+     *
+     * @param v Given Vector object.
      * @return A number, scalar product of multiplication.
      */
     public double dotProduct(Vector v) {
@@ -85,32 +97,36 @@ public class Vector {
     }
 
     /**
-     * Gets squared length of this vector.
-     * @return Squared length of this vector.
+     * Gets squared length of this Vector.
+     *
+     * @return Squared length of this Vector.
      */
     public double lengthSquared() {
-        return this.x*this.x + this.y*this.y;
+        return this.x * this.x + this.y * this.y;
     }
 
     /**
-     * Gets length of this vector.
-     * @return Length of this vector.
+     * Gets length of this Vector.
+     *
+     * @return Length of this Vector.
      */
     public double length() {
         return Math.sqrt(this.lengthSquared());
     }
 
     /**
-     * Gets angle of this vector.
-     * @return Angle of this vector.
+     * Gets angle of this Vector.
+     *
+     * @return Angle of this Vector.
      */
     public double getAngle() {
-        return Math.atan2(this.x, this.y);
+        return Math.atan2(this.y, this.x);
     }
 
     /**
-     * Normalizes this vector.
-     * @return New, normalized vector object.
+     * Normalizes this Vector.
+     *
+     * @return New, normalized Vector object.
      */
     public Vector normalize() {
         double lengthInverse = 1.0 / this.length();
@@ -118,8 +134,9 @@ public class Vector {
     }
 
     /**
-     * Creates a string representation of this vector.
-     * @return String representation of this vector.
+     * Creates a string representation of this Vector.
+     *
+     * @return String representation of this Vector.
      */
     @Override
     public String toString() {
@@ -130,7 +147,8 @@ public class Vector {
     }
 
     /**
-     * Checks whether this vector is equal to given object.
+     * Checks whether this Vector is equal to given object.
+     *
      * @param o Given object.
      * @return Boolean value depending on the result.
      */
@@ -144,7 +162,8 @@ public class Vector {
     }
 
     /**
-     * Generates a hash code of this vector.
+     * Generates a hash code of this Vector.
+     *
      * @return Generated hash code.
      */
     @Override

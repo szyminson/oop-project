@@ -3,9 +3,9 @@ package oop.project;
 import java.util.Map;
 
 public class RocketController implements IRocketPart {
-    private final Map<Double, Vector> path;
+    private final Map<Double, Double> path;
 
-    public RocketController(Map<Double, Vector> path) {
+    public RocketController(Map<Double, Double> path) {
         this.path = path;
     }
 
@@ -15,7 +15,11 @@ public class RocketController implements IRocketPart {
     }
 
     @Override
-    public double changeDirection(Vector currentDirection, double time) {
-        throw new UnsupportedOperationException("Not implemented");
+    public double changeDirection(double currentDirection, double time) {
+        if (path.isEmpty()) {
+            return 0;
+        }
+        double newDirection = MathUtils.interpolate(path, time);
+        return newDirection - currentDirection;
     }
 }

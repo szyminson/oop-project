@@ -21,11 +21,11 @@ public class TestRocket {
             }
 
             @Override
-            public Vector createThrust(Vector direction, double time) {
+            public Vector createThrust(Vector direction, double time, double deltaTime) {
                 return direction;
             }
         };
-        Rocket rocket = new Rocket(Collections.singletonList(testEngine), zero, new Vector(1, 0));
+        Rocket rocket = new Rocket(Collections.singletonList(testEngine), zero, 0);
         for (int i = 0; i < stepsPerSecond * 2; i++) {
             double time = i / (double) stepsPerSecond;
             rocket.updateRocket(zero, time, dt);
@@ -50,10 +50,10 @@ public class TestRocket {
                 return 1;
             }
         };
-        Rocket rocket = new Rocket(Collections.singletonList(testPart), zero, new Vector(1, 0));
+        Rocket rocket = new Rocket(Collections.singletonList(testPart), zero, 0);
         for (int i = 0; i < stepsPerSecond * 2; i++) {
             double time = i / (double) stepsPerSecond;
-            rocket.updateRocket(rocket.getDirection(), time, dt);
+            rocket.updateRocket(new Vector(1, 0), time, dt);
         }
         // mass = 1, force = 1, time = 2, a = F/m -> a = 1. s = a*t*t/2 = 1 * 2 * 2 / 2 = 2
         Vector pos = rocket.getPosition();
@@ -76,21 +76,19 @@ public class TestRocket {
             }
 
             @Override
-            public double changeDirection(Vector currentDirection, double time) {
+            public double changeDirection(double currentDirection, double time) {
                 double target = time * Math.PI;
-                return target - currentDirection.getAngle();
+                return target - currentDirection;
             }
         };
-        Rocket rocket = new Rocket(Collections.singletonList(testEngine), zero, new Vector(1, 0));
+        Rocket rocket = new Rocket(Collections.singletonList(testEngine), zero, 0);
         // do half of a full rotation and check if the direction changed sign
         for (int i = 0; i < stepsPerSecond; i++) {
             double time = i / (double) stepsPerSecond;
             rocket.updateRocket(zero, time, dt);
         }
-        // mass = 1, force = 1, time = 2, a = F/m -> a = 1. s = a*t*t/2 = 1 * 2 * 2 / 2 = 2
-        Vector direction = rocket.getDirection();
-        Vector expectedDirection = new Vector(-1, 0);
-        double dirDiff = expectedDirection.sub(direction).length();
-        assertEquals("rocketDirection = " + direction + " but expected " + expectedDirection, 0, dirDiff, 0.0001);
+        double direction = rocket.getDirection();
+        double expectedDirection = Math.PI;
+        assertEquals("rocketDirection = " + direction + " but expected " + expectedDirection, expectedDirection, direction, 0.0001);
     }
 }

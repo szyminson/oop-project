@@ -5,10 +5,10 @@ import java.util.List;
 public class Rocket {
     private List<IRocketPart> parts;
     private Vector position;
-    private Vector direction;
+    private double direction;
     private Vector velocity;
 
-    public Rocket(List<IRocketPart> parts, Vector position, Vector direction) {
+    public Rocket(List<IRocketPart> parts, Vector position, double direction) {
         this.parts = parts;
         this.position = position;
         this.direction = direction;
@@ -27,7 +27,7 @@ public class Rocket {
         return this.position;
     }
 
-    public Vector getDirection() {
+    public double getDirection() {
         return this.direction;
     }
 
@@ -36,8 +36,9 @@ public class Rocket {
     }
 
     public void updateRocket(Vector externalForce, double time, double deltaTime) {
+        Vector directionVector = new Vector(Math.cos(direction), Math.sin(direction));
         Vector totalThrust = parts.stream()
-                .map(p -> p.createThrust(direction, time))
+                .map(p -> p.createThrust(directionVector, time, deltaTime))
                 .reduce(Vector::add).orElse(new Vector(0, 0))
                 .add(externalForce);
         double directionChange = parts.stream().mapToDouble(p -> p.changeDirection(direction, time)).sum();
@@ -50,13 +51,6 @@ public class Rocket {
         // v = dx/dt -> dx = v*dt
         Vector dx = this.velocity.mul(deltaTime);
         this.position = this.position.add(dx);
-
-        // check for 0 because otherwise it would change direction due to precision errors
-        if (directionChange != 0) {
-            // convert to polar coordinates, change angle, and back to x/y
-            double fi = this.direction.getAngle() + directionChange;
-            double r = this.direction.length();
-            this.direction = new Vector(r * Math.cos(fi), r * Math.sin(fi));
-        }
+        this.direction += directionChange;
     }
 }
