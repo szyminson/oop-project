@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Vector {
 
     /**
-     * Coordinates of this vector.
+     * Coordinates of this Vector.
      */
     private final double x, y;
 
@@ -43,9 +43,9 @@ public class Vector {
     }
 
     /**
-     * Adds given vector to this Vector.
+     * Adds given Vector to this Vector.
      *
-     * @param v Given vector object.
+     * @param v Given Vector object.
      * @return Sum of two Vectors.
      */
     public Vector add(Vector v) {
