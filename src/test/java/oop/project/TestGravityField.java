@@ -8,7 +8,7 @@ public class TestGravityField {
 
     @Test
     public void testGravity() {
-        GravityField field = new GravityField(new Vector(-10, 0), 2);
+        GravityField field = new GravityField(new Vector(-10, 0), 2, 100);
         Vector pos = new Vector(-5, 0);
 
         Vector force = field.getForce(pos, null, null, 1.2, 0);

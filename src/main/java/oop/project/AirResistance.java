@@ -2,17 +2,25 @@ package oop.project;
 
 public class AirResistance implements IForceField {
     /**
-     * Drag coefficient of this AirResistance.
+     * Constant for the simulated rocket that specifies air drag.
+     * Physically equal to {@code 0.5 * crossSectionalArea * dragCoefficient}
      */
-    private double dragCoefficient;
+    private final double dragConstant;
+
+    private final double surfaceAirPressure;
+    private final GravityField gravityObject;
 
     /**
-     * Sets dragCoefficient of this AirResistance.
+     * Sets dragConstant, surfaceAirPressure and gravity of this AirResistance.
      *
-     * @param dragCoefficient Given drag coefficient.
+     * @param dragConstant Given drag constant. See {@link #dragConstant}
+     * @param surfaceAirPressure Air pressure at the surface
+     * @param gravity Gravity source
      */
-    public AirResistance(double dragCoefficient) {
-        this.dragCoefficient = dragCoefficient;
+    public AirResistance(double dragConstant, double surfaceAirPressure, GravityField gravity) {
+        this.dragConstant = dragConstant;
+        this.surfaceAirPressure = surfaceAirPressure;
+        this.gravityObject = gravity;
     }
 
     /**
@@ -27,6 +35,7 @@ public class AirResistance implements IForceField {
      */
     @Override
     public Vector getForce(Vector position, Vector rotation, Vector velocity, double mass, double time) {
-        return velocity.mul(-this.dragCoefficient * velocity.lengthSquared());
+        double density = MathUtils.getAirDensity(gravityObject, position, surfaceAirPressure);
+        return velocity.mul(-this.dragConstant * velocity.length() * density);
     }
 }

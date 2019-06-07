@@ -38,6 +38,9 @@ public class FuelContainer implements IRocketPart {
      **/
     public void takeFuel(double amount) {
         this.fuelMass -= amount;
+        if (this.fuelMass < 0) {
+            this.fuelMass = 0;
+        }
     }
 
     /**
