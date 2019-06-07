@@ -42,6 +42,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
     private SimulationViewPanel viewPanel;
 
     private double loggingInterval;
+
     SimulationWorker(Builder builder) {
         this.gravityFields = builder.gravityFields;
         for (GravityField field : gravityFields) {
@@ -108,24 +109,28 @@ class SimulationWorker extends SwingWorker<Object, Object> {
             System.out.println("Simulation stopped by user");
             updateHandler();
             logStatus(world);
+            stopSimulation();
             return true;
         }
         if (world.getTime() > maxTime) {
             System.out.println("Simulation stopped: ran out of time");
             updateHandler();
             logStatus(world);
+            stopSimulation();
             return true;
         }
         if (hasStartedOffPlanet) if (distanceFromSurface < 0) {
             System.out.println("Simulation stopped: touched ground");
             updateHandler();
             logStatus(world);
+            stopSimulation();
             return true;
         }
         if (distanceFromSurface > maxAltitude) {
             System.out.println("Simulation stopped: exceeded max altitude");
             updateHandler();
             logStatus(world);
+            stopSimulation();
             return true;
         }
         return false;
@@ -167,6 +172,10 @@ class SimulationWorker extends SwingWorker<Object, Object> {
 
     void stopSimulation() {
         this.simulationRunning = false;
+    }
+
+    boolean isSimulationRunning() {
+        return simulationRunning;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class SimulatorGui extends JFrame {
     private static final double DEFAULT_WIND_STRENGTH = 0;
     private static final double DEFAULT_WIND_VARIATION = 0.001;
     private static final double DEFAULT_SURFACE_AIR_PRESSURE = 100_000;
-    private static final double DEFAULT_TIME_STEP = 0.001;
+    private static final double DEFAULT_TIME_STEP = 0.00001;
     private static final double DEFAULT_MAX_TIME = 10000;
     private static final double DEFAULT_TARGET_ALTITUDE = 100000;
 
@@ -64,6 +64,7 @@ public class SimulatorGui extends JFrame {
     private JTextField loggingInterval;
 
     private volatile boolean simulationRunning = false;
+    private SimulationWorker simulationnWorker;
 
 
     public SimulatorGui() throws HeadlessException {
@@ -208,19 +209,20 @@ public class SimulatorGui extends JFrame {
     }
 
     private void stopSimulation() {
-        simulationRunning = false;
+        if (simulationnWorker != null) {
+            simulationnWorker.stopSimulation();
+        }
     }
 
     private void startSimulation(JPanel viewContainer) {
-        if (simulationRunning) {
+        if (simulationnWorker != null && simulationnWorker.isSimulationRunning()) {
             return;
         }
-        simulationRunning = true;
-        SwingWorker<?, ?> swingWorker = new SimulationWorker.Builder()
+        simulationnWorker = new SimulationWorker.Builder()
                 .gravitySources(gravitySources.getModel())
                 .path(pathTable.getModel())
                 .thrust(thrustTable.getModel())
-                .airSurfacePressure(DEFAULT_SURFACE_AIR_PRESSURE+"")
+                .airSurfacePressure(DEFAULT_SURFACE_AIR_PRESSURE + "")
                 .dragConstant(dragConstant.getText())
                 .engineMass(engineMass.getText())
                 .fuelContainerMass(fuelContainerMass.getText())
@@ -241,7 +243,7 @@ public class SimulatorGui extends JFrame {
                 .describeVelocity(velocityLabel::setText)
                 .loggingInverval(loggingInterval.getText())
                 .build();
-        swingWorker.execute();
+        simulationnWorker.execute();
     }
 
     private Component getRocketConfigPane() {
@@ -321,7 +323,8 @@ public class SimulatorGui extends JFrame {
         JButton add = new JButton("Add");
         add.addActionListener(bc);
         TableModel model = new DefaultTableModel(new Object[][]{
-                {add, 0.0, 90.0}
+                {add, 0.0, 90.0},
+                {add, 200.0, 0.0}
         }, new String[]{"Add/remove", "Time", "Direction angle (degrees)"});
         pathTable.setModel(model);
         bc.addToColumn(0);
