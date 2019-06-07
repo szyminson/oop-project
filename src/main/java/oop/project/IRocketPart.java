@@ -8,7 +8,7 @@ public interface IRocketPart {
         return new Vector(0, 0);
     }
 
-    default double changeDirection(Vector currentDirection, double time) {
+    default double changeDirection(double currentDirection, double time) {
         return 0;
     }
 }
