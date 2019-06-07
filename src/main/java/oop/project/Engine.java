@@ -17,7 +17,7 @@ public class Engine implements IRocketPart {
     /**
      * Sets parameters of this Engine.
      *
-     * @param mass Given mass.
+     * @param mass       Given mass.
      * @param fuelSource Given source of fuel.
      * @param thrustData Given thrust data.
      */
@@ -41,7 +41,7 @@ public class Engine implements IRocketPart {
      * Calculates a thrust force of this Engine using given parameters.
      *
      * @param direction Given direction.
-     * @param time Given time.
+     * @param time      Given time.
      * @return Calculated thrust force.
      */
     @Override
