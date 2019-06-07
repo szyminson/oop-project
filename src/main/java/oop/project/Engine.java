@@ -3,22 +3,53 @@ package oop.project;
 
 import java.util.Map;
 
+/**
+ * An implementation of rocket's engine in the project.
+ */
 public class Engine implements IRocketPart {
+    /**
+     * Mass of this Engine.
+     */
     private final double mass;
+    /**
+     * Fuel source of this Engine.
+     */
     private final FuelContainer fuelSource;
+    /**
+     * Thrust data of this Engine.
+     */
     private final Map<Double, Double> thrustData;
 
+    /**
+     * Sets parameters of this Engine.
+     *
+     * @param mass       Given mass.
+     * @param fuelSource Given source of fuel.
+     * @param thrustData Given thrust data.
+     */
     public Engine(double mass, FuelContainer fuelSource, Map<Double, Double> thrustData) {
         this.mass = mass;
         this.fuelSource = fuelSource;
         this.thrustData = thrustData;
     }
 
+    /**
+     * Gets mass of this Engine.
+     *
+     * @return Mass of this Engine.
+     */
     @Override
     public double getMass() {
         return this.mass;
     }
 
+    /**
+     * Calculates a thrust force of this Engine using given parameters.
+     *
+     * @param direction Given direction.
+     * @param time      Given time.
+     * @return Calculated thrust force.
+     */
     @Override
     public Vector createThrust(Vector direction, double time) {
         if (this.fuelSource.getRemainingFuel() <= 0) {

@@ -3,16 +3,19 @@ package oop.project;
 public class FuelContainer implements IRocketPart {
 
     /**
-     * Parameters of this FuelContainer.
+     * Mass of empty container.
      */
     private final double containerMass;
+    /**
+     * Mass of this FuelContainer's fuel.
+     */
     private double fuelMass;
 
     /**
      * Sets containerMass and fuelMass of this FuelContainer.
      *
-     * @param containerMass of FuelContainer.
-     * @param fuelMass      of FuelContainer.
+     * @param containerMass Given container mass.
+     * @param fuelMass      Given fuel mass.
      */
     public FuelContainer(double containerMass, double fuelMass) {
         this.containerMass = containerMass;
