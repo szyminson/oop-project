@@ -2,6 +2,9 @@ package oop.project;
 
 import java.util.Map;
 
+/**
+ * Shared math and physics functions.
+ */
 public class MathUtils {
     /**
      * Given a map with different set values for some keys (time), calculates an interpolated
@@ -52,8 +55,9 @@ public class MathUtils {
 
     /**
      * Calculates approximate air density for given gravity source, position and surface pressure
-     * @param gravity Given gravity source
-     * @param position Given position to calculate air density
+     *
+     * @param gravity            Given gravity source
+     * @param position           Given position to calculate air density
      * @param surfaceAirPressure Air pressure at the surface
      * @return Air density
      */

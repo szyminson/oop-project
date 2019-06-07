@@ -1,5 +1,8 @@
 package oop.project;
 
+/**
+ * Just a fuel container.
+ */
 public class FuelContainer implements IRocketPart {
 
     /**

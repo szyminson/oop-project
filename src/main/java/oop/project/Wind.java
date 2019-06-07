@@ -70,7 +70,7 @@ public class Wind implements IForceField {
         double rx = 1 + ((this.perlin.getValue(position.getX() + delta, position.getY(), time) - 0.5) * 2);
         double ry = 1 + ((this.perlin.getValue(position.getX(), position.getY() + delta, time) - 0.5) * 2);
 
-        double density =  MathUtils.getAirDensity(gravityObject, position, surfaceAirPressure);
+        double density = MathUtils.getAirDensity(gravityObject, position, surfaceAirPressure);
 
         double fx = this.strengthVariation * density * (rx - r0) / delta;
         double fy = this.strengthVariation * density * (ry - r0) / delta;

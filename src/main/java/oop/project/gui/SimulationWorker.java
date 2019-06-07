@@ -47,6 +47,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
     private double loggingInterval;
 
     private SimulationLogger logger;
+
     SimulationWorker(Builder builder) {
         this.gravityFields = builder.gravityFields;
         for (GravityField field : gravityFields) {
@@ -100,7 +101,7 @@ class SimulationWorker extends SwingWorker<Object, Object> {
         if (builder.createLogFile) {
             String time = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").format(new Date());
             try {
-                this.logger = new SimulationLogger("simulation-log" +  time + ".csv");
+                this.logger = new SimulationLogger("simulation-log" + time + ".csv");
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Error writing log file " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }

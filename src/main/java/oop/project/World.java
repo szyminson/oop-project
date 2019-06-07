@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 
+/**
+ * Simulated world environment.
+ */
 public class World {
     /**
      * Rocket object.
@@ -42,14 +45,29 @@ public class World {
         this.uiUpdateHandler = uiUpdateHandler;
     }
 
+    /**
+     * Gets Rocket object.
+     *
+     * @return Rocket.
+     */
     public Rocket getRocket() {
         return rocket;
     }
 
+    /**
+     * Gets all force fields present in this World.
+     *
+     * @return A List of forceFields.
+     */
     public List<IForceField> getForceFields() {
         return forceFields;
     }
 
+    /**
+     * Gets this World's time.
+     *
+     * @return Current time.
+     */
     public double getTime() {
         return time;
     }
