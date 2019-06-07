@@ -7,7 +7,14 @@ public class AirResistance implements IForceField {
      */
     private final double dragConstant;
 
+    /**
+     * Air pressure at the surface.
+     */
     private final double surfaceAirPressure;
+
+    /**
+     * Gravity source, controls how air density changes with height.
+     */
     private final GravityField gravityObject;
 
     /**
@@ -21,6 +28,7 @@ public class AirResistance implements IForceField {
         this.dragConstant = dragConstant;
         this.surfaceAirPressure = surfaceAirPressure;
         this.gravityObject = gravity;
+
     }
 
     /**

@@ -7,20 +7,26 @@ import com.flowpowered.noise.module.source.Perlin;
  * An implementation of wind as an external factor in the project.
  */
 public class Wind implements IForceField {
+
     /**
      * Strength variation of this Wind.
      */
     private final double strengthVariation;
+
     /**
      * Force of this Wind.
      */
     private final Vector windForce;
 
+
     /**
      * Perlin noise of this Wind.
+     * Used to generate random, but continuously changing wind speed.
      */
     private final Perlin perlin;
+
     private final double surfaceAirPressure;
+
     private final GravityField gravityObject;
 
     /**
@@ -30,6 +36,7 @@ public class Wind implements IForceField {
      * @param windForce         Given force of wind.
      */
     public Wind(double strengthVariation, Vector windForce, double surfaceAirPressure, GravityField gravity) {
+
         this.strengthVariation = strengthVariation;
         this.windForce = windForce;
         this.surfaceAirPressure = surfaceAirPressure;

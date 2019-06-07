@@ -50,6 +50,13 @@ public class MathUtils {
         return keyFraction * valueDifference + lowValue;
     }
 
+    /**
+     * Calculates approximate air density for given gravity source, position and surface pressure
+     * @param gravity Given gravity source
+     * @param position Given position to calculate air density
+     * @param surfaceAirPressure Air pressure at the surface
+     * @return Air density
+     */
     public static double getAirDensity(GravityField gravity, Vector position, double surfaceAirPressure) {
         // Approximation of air pressure
         // this assumes temperature about 270K, and a relatively big planet
