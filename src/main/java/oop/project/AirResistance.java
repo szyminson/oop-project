@@ -7,7 +7,7 @@ public class AirResistance implements IForceField {
     private double dragCoefficient;
 
     /**
-     * Sets dragCoefficient od this AirResistance.
+     * Sets dragCoefficient of this AirResistance.
      *
      * @param dragCoefficient Given drag coefficient.
      */
