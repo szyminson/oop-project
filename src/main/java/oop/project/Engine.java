@@ -22,6 +22,9 @@ public class Engine implements IRocketPart {
      */
     private final Map<Double, Double> thrustData;
 
+    /**
+     * Specifies fuel usage per unit of impulse.
+     */
     private final double fuelUsage;
 
     /**
