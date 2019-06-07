@@ -2,6 +2,7 @@ package oop.project.gui;
 
 import oop.project.GravityField;
 import oop.project.Rocket;
+import oop.project.Vector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,36 +22,74 @@ class SimulationViewPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        double minX = -1, maxX = 1, minY = -1, maxY = 1;
-        for (GravityField field : gravitySources) {
-            minX = min(field.getSourcePosition().getX() - field.getRadius(), minX);
-            maxX = max(field.getSourcePosition().getX() + field.getRadius(), maxX);
 
-            minY = min(field.getSourcePosition().getY() - field.getRadius(), minY);
-            maxY = max(field.getSourcePosition().getY() + field.getRadius(), maxY);
-        }
+        double centerX = rocket.getPosition().getX();
+        double centerY = rocket.getPosition().getY();
 
         int offX = getWidth() / 2;
         int offY = getHeight() / 2;
-        double maxCoord = max(max(abs(minX), abs(maxX)), max(abs(minY), abs(maxY)));
 
-        double scale = min(getWidth(), getHeight()) / maxCoord / 2;
+        double size = 1000;
+        for (GravityField field : gravitySources) {
+            double distance = (field.getSourcePosition().sub(rocket.getPosition()).length() - field.getRadius()) * 4;
+            size = Math.max(size, distance);
+        }
+        double scale = Math.min(getWidth(), getHeight()) / size;
+
+        double gridSize = Math.pow(2, (int) (Math.log(size / 6) / Math.log(2)));
+        g.setColor(new Color(1f, 0f, 0f, 0.05f));
+        drawGrid(g, gridSize / 2, scale, centerX, centerY);
+        g.setColor(new Color(1f, 0f, 0f, 0.1f));
+        drawGrid(g, gridSize, scale, centerX, centerY);
+        g.setColor(new Color(1f, 0f, 0f, 0.2f));
+        drawGrid(g, gridSize * 2, scale, centerX, centerY);
+
 
         g.setColor(Color.BLACK);
 
         for (GravityField field : gravitySources) {
-            int x = (int) (field.getSourcePosition().getX() * scale);
-            int y = (int) (field.getSourcePosition().getY() * scale);
+            int x = (int) ((field.getSourcePosition().getX() - centerX) * scale);
+            int y = (int) ((field.getSourcePosition().getY() - centerY) * scale);
             int r = (int) (field.getRadius() * scale);
 
             g.drawOval(x - 1 + offX, -y - 1 + offY, 3, 3);
             g.drawOval(x - r + offX, -y - r + offY, r * 2 + 1, r * 2 + 1);
         }
 
-        int rocketX = (int) (rocket.getPosition().getX() * scale);
-        int rocketY = (int) (rocket.getPosition().getY() * scale);
+        int rocketX = (int) ((rocket.getPosition().getX() - centerX) * scale) + offX;
+        int rocketY = (int) ((rocket.getPosition().getY() - centerY) * scale) + offY;
 
         g.setColor(Color.BLUE);
-        g.drawRect(rocketX - 2 + offX, -rocketY - 4 + offY, 5, 9);
+
+        double alpha = -rocket.getDirection();
+        Vector forward = new Vector(cos(alpha), -sin(alpha)).mul(9);
+
+        alpha += Math.PI / 2;
+        Vector left = new Vector(cos(alpha), -sin(alpha)).mul(4);
+
+        alpha += Math.PI;
+        Vector right = new Vector(cos(alpha), -sin(alpha)).mul(4);
+
+        g.drawLine((int) forward.getX() + rocketX, (int) forward.getY() + rocketY,
+                (int) left.getX() + rocketX, (int) left.getY() + rocketY);
+
+        g.drawLine((int) left.getX() + rocketX, (int) left.getY() + rocketY,
+                (int) right.getX() + rocketX, (int) right.getY() + rocketY);
+
+        g.drawLine((int) right.getX() + rocketX, (int) right.getY() + rocketY,
+                (int) forward.getX() + rocketX, (int) forward.getY() + rocketY);
+    }
+
+    private void drawGrid(Graphics g, double gridSize, double scale, double centerX, double centerY) {
+        int count = 30;
+        for (int i = -count; i < count; i++) {
+            double x = (Math.floor(i - centerX / gridSize) * gridSize + centerX) * scale;
+            g.drawLine((int) Math.ceil(x) + getWidth() / 2, 0, (int) Math.ceil(x) + getWidth() / 2, getHeight());
+        }
+
+        for (int i = -count; i < count; i++) {
+            double y = (Math.floor(i - centerY / gridSize) * gridSize + centerY) * scale;
+            g.drawLine(0, (int) Math.ceil(y) + getHeight() / 2, getWidth(), (int) Math.ceil(y) + getHeight() / 2);
+        }
     }
 }
