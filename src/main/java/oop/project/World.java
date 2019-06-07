@@ -6,14 +6,14 @@ import java.util.function.Predicate;
 public class World {
     private Rocket rocket;
     private List<IForceField> forceFields;
-    private Predicate<Rocket> endCondition;
+    private Predicate<World> endCondition;
 
     private Runnable uiUpdateHandler;
 
     private double timeStep;
     private double time = 0;
 
-    public World(Rocket rocket, List<IForceField> forceFields, Predicate<Rocket> endCondition, double timeStep, Runnable uiUpdateHandler) {
+    public World(Rocket rocket, List<IForceField> forceFields, Predicate<World> endCondition, double timeStep, Runnable uiUpdateHandler) {
         this.rocket = rocket;
         this.forceFields = forceFields;
         this.endCondition = endCondition;
@@ -21,8 +21,20 @@ public class World {
         this.uiUpdateHandler = uiUpdateHandler;
     }
 
+    public Rocket getRocket() {
+        return rocket;
+    }
+
+    public List<IForceField> getForceFields() {
+        return forceFields;
+    }
+
+    public double getTime() {
+        return time;
+    }
+
     public void runSimulation() {
-        while (!endCondition.test(rocket)) {
+        while (!endCondition.test(this)) {
             Vector directionVector = new Vector(Math.cos(rocket.getDirection()), Math.sin(rocket.getDirection()));
             Vector totalForce = forceFields.stream()
                     .map(f -> f.getForce(rocket.getPosition(), directionVector, rocket.getVelocity(), rocket.getMass(), time))
