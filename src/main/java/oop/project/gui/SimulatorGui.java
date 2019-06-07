@@ -1,15 +1,11 @@
 package oop.project.gui;
 
 import com.google.common.collect.ImmutableMap;
-import oop.project.*;
-import oop.project.Vector;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
-import java.util.function.Predicate;
 
 public class SimulatorGui extends JFrame {
 
@@ -50,19 +46,24 @@ public class SimulatorGui extends JFrame {
     private JTextField windForceX;
     private JTextField windForceY;
     private JTextField windForceVariation;
-    private JTextField dragCoefficient;
+    private JTextField dragConstant;
     private JTable gravitySources;
 
     private JLabel timeLabel;
     private JLabel externalForcesLabel;
     private JLabel positionLabel;
     private JLabel directionLabel;
+    private JLabel airResistanceLabel;
+    private JLabel gravityLabel;
+    private JLabel windLabel;
+    private JLabel velocityLabel;
 
     private JTextField timeStep;
     private JTextField maxTime;
     private JTextField maxDistance;
 
     private volatile boolean simulationRunning = false;
+
 
     public SimulatorGui() throws HeadlessException {
         super("Rocket Simulator");
@@ -99,6 +100,26 @@ public class SimulatorGui extends JFrame {
         constraints.gridy++;
         constraints.gridx = 0;
         panel.add(externalForcesLabel, constraints);
+
+        gravityLabel = new JLabel("  Gravity:");
+        constraints.gridy++;
+        constraints.gridx = 0;
+        panel.add(gravityLabel, constraints);
+
+        windLabel = new JLabel("  Wind:");
+        constraints.gridy++;
+        constraints.gridx = 0;
+        panel.add(windLabel, constraints);
+
+        airResistanceLabel = new JLabel("  Air resistance:");
+        constraints.gridy++;
+        constraints.gridx = 0;
+        panel.add(airResistanceLabel, constraints);
+
+        velocityLabel = new JLabel("Velocity:");
+        constraints.gridy++;
+        constraints.gridx = 0;
+        panel.add(velocityLabel, constraints);
 
         positionLabel = new JLabel("Position:");
         constraints.gridy++;
@@ -187,118 +208,30 @@ public class SimulatorGui extends JFrame {
             return;
         }
         simulationRunning = true;
-        List<GravityField> gravityFields = new ArrayList<>();
-        for (int i = 0; i < gravitySources.getRowCount(); i++) {
-            String x = gravitySources.getModel().getValueAt(i, 1).toString();
-            String y = gravitySources.getModel().getValueAt(i, 2).toString();
-            String r = gravitySources.getModel().getValueAt(i, 3).toString();
-            String strength = gravitySources.getModel().getValueAt(i, 4).toString();
-
-            GravityField field = new GravityField(new Vector(Double.parseDouble(x), Double.parseDouble(y)), Double.parseDouble(strength), Double.parseDouble(r));
-            gravityFields.add(field);
-        }
-
-        List<IForceField> forces = new ArrayList<>();
-        for (GravityField field : gravityFields) {
-            String dragCoefficient = this.dragCoefficient.getText();
-            AirResistance airResistance = new AirResistance(Double.parseDouble(dragCoefficient), DEFAULT_SURFACE_AIR_PRESSURE, field);
-
-            String strengthVariation = this.windForceVariation.getText();
-            String windX = this.windForceX.getText();
-            String windY = this.windForceY.getText();
-            Wind wind = new Wind(Double.parseDouble(strengthVariation),
-                    new Vector(Double.parseDouble(windX), Double.parseDouble(windY)), DEFAULT_SURFACE_AIR_PRESSURE, field);
-
-            forces.add(field);
-            forces.add(airResistance);
-            forces.add(wind);
-        }
-
-        String fuelContainerMass = this.fuelContainerMass.getText();
-        String fuelMass = this.fuelMass.getText();
-        FuelContainer fuelContainer = new FuelContainer(Double.parseDouble(fuelContainerMass), Double.parseDouble(fuelMass));
-
-        Map<Double, Double> thrustData = new HashMap<>();
-        for (int i = 0; i < thrustTable.getRowCount(); i++) {
-            String time = thrustTable.getModel().getValueAt(i, 1).toString();
-            String value = thrustTable.getModel().getValueAt(i, 2).toString();
-            thrustData.put(Double.parseDouble(time), Double.parseDouble(value));
-        }
-
-        String engineMass = this.engineMass.getText();
-        Engine engine = new Engine(Double.parseDouble(engineMass), fuelContainer, thrustData);
-
-        Map<Double, Double> path = new HashMap<>();
-        for (int i = 0; i < pathTable.getRowCount(); i++) {
-            String time = pathTable.getModel().getValueAt(i, 1).toString();
-            String value = pathTable.getModel().getValueAt(i, 2).toString();
-            path.put(Double.parseDouble(time), Math.toRadians(Double.parseDouble(value)));
-        }
-        RocketController controller = new RocketController(path);
-
-        Rocket rocket = new Rocket(Arrays.asList(fuelContainer, engine, controller), new Vector(0, 0), Math.PI / 2);
-
-        viewContainer.removeAll();
-        viewContainer.setLayout(new CardLayout());
-        viewContainer.add(new SimulationViewPanel(rocket, gravityFields));
-        viewContainer.repaint();
-
-        GravityField mainGravityField = gravityFields.get(0);
-
-        double maxTime = Double.parseDouble(this.maxTime.getText());
-        double maxDistance = Double.parseDouble(this.maxDistance.getText());
-        double timeStep = Double.parseDouble(this.timeStep.getText());
-
-        SwingWorker<?, ?> swingWorker = new SwingWorker<Object, Object>() {
-            private long lastUpdate = System.currentTimeMillis();
-            private World world;
-            private boolean hasStartedOffPlanet = false;
-
-            @Override
-            protected Object doInBackground() {
-                Predicate<World> endCondition = w -> {
-                    double distanceFromSurface = rocket.getPosition().sub(mainGravityField.getSourcePosition()).length() - mainGravityField.getRadius();
-                    if (distanceFromSurface > 0) {
-                        hasStartedOffPlanet = true;
-                    }
-                    return !simulationRunning
-                            || w.getTime() > maxTime
-                            || (hasStartedOffPlanet && distanceFromSurface < 0)
-                            || distanceFromSurface > maxDistance;
-                };
-                world = new World(rocket, forces, endCondition, timeStep, () -> {
-                    if (System.currentTimeMillis() - lastUpdate > 100) {
-                        viewContainer.revalidate();
-                        viewContainer.repaint();
-                        timeLabel.setText(String.format("Time: %.2f", world.getTime()));
-                        Vector position = world.getRocket().getPosition();
-                        double direction = world.getRocket().getDirection();
-                        Vector directionVector = new Vector(Math.cos(direction), Math.sin(direction));
-                        Vector velocity = world.getRocket().getVelocity();
-                        Vector extForces = world.getForceFields().stream()
-                                .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
-                                .reduce(Vector::add).orElse(new Vector(0, 0));
-
-                        Vector gravityForces = gravityFields.stream()
-                                .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
-                                .reduce(Vector::add).orElse(new Vector(0, 0));
-
-                        @SuppressWarnings("SuspiciousMethodCalls")
-                        Vector otherForces = forces.stream().filter(f -> !gravityFields.contains(f))
-                                .map(f -> f.getForce(position, directionVector, velocity, world.getRocket().getMass(), world.getTime()))
-                                .reduce(Vector::add).orElse(new Vector(0, 0));
-
-                        externalForcesLabel.setText(String.format("External forces: %8.1f, %8.1f (gravity: %8.1f, %8.1f, other: %8.1f, %8.1f)",
-                                extForces.getX(), extForces.getY(), gravityForces.getX(), gravityForces.getY(), otherForces.getX(), otherForces.getY()));
-                        positionLabel.setText(String.format("Position: %8.1f, %8.1f", position.getX(), position.getY()));
-                        directionLabel.setText(String.format("Direction: %3.3fpi", world.getRocket().getDirection() / Math.PI));
-                        lastUpdate = System.currentTimeMillis();
-                    }
-                });
-                world.runSimulation();
-                return null;
-            }
-        };
+        SwingWorker<?, ?> swingWorker = new SimulationWorker.Builder()
+                .gravitySources(gravitySources.getModel())
+                .path(pathTable.getModel())
+                .thrust(thrustTable.getModel())
+                .airSurfacePressure(DEFAULT_SURFACE_AIR_PRESSURE+"")
+                .dragConstant(dragConstant.getText())
+                .engineMass(engineMass.getText())
+                .fuelContainerMass(fuelContainerMass.getText())
+                .fuelMass(fuelMass.getText())
+                .maxAltitude(maxDistance.getText())
+                .maxTime(maxTime.getText())
+                .timeStep(timeStep.getText())
+                .windForce(windForceX.getText(), windForceY.getText())
+                .windVariation(windForceVariation.getText())
+                .viewPanelContainer(viewContainer)
+                .describeAirResistance(airResistanceLabel::setText)
+                .describeExternalForces(externalForcesLabel::setText)
+                .describeDirection(directionLabel::setText)
+                .describeGravity(gravityLabel::setText)
+                .describePosition(positionLabel::setText)
+                .describeTime(timeLabel::setText)
+                .describeWind(windLabel::setText)
+                .describeVelocity(velocityLabel::setText)
+                .build();
         swingWorker.execute();
     }
 
@@ -419,9 +352,9 @@ public class SimulatorGui extends JFrame {
         constraints.gridx = 0;
         constraints.gridy++;
         panel.add(new JLabel("Drag coefficient"), constraints);
-        dragCoefficient = new JTextField("0.06");
+        dragConstant = new JTextField("0.06");
         constraints.gridx = 1;
-        panel.add(dragCoefficient, constraints);
+        panel.add(dragConstant, constraints);
 
         constraints.gridx = 0;
         constraints.gridy++;
