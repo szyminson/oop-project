@@ -334,7 +334,7 @@ public class SimulatorGui extends JFrame {
         JButton add = new JButton("Add");
         add.addActionListener(bc);
         TableModel model = new DefaultTableModel(new Object[][]{
-                {add, 0.0, 90.0},
+                {bc.newButton(), 0.0, 90.0},
                 {add, 200.0, 0.0}
         }, new String[]{"Add/remove", "Time", "Direction angle (degrees)"});
         pathTable.setModel(model);
