@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 class SimulationWorker extends SwingWorker<Object, Object> {
 

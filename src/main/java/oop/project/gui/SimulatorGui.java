@@ -17,13 +17,29 @@ public class SimulatorGui extends JFrame {
     // recalculated thrust to get the same acceleration, without discarding mass of previous stages
     private static final Map<Double, Double> DEFAULT_THRUST_TABLE = ImmutableMap.<Double, Double>builder()
             .put(-0.1, 0.0)
-            .put(0.0, 35_100_000.0)
-            .put(168.0, 35_100_000.0)
-            .put(168.01, 6_220_344.0)
-            .put(168.0 + 360, 6_220_344.0)
-            .put(168.01 + 360, 2_461_801.0)
-            .put(168.0 + 360 + 165 + 335, 2_461_801.0)
-            .put(168.01 + 360 + 165 + 335, 0.0)
+            .put(0.0, 35_100_000.0 * 5)
+            .put(137.0, 35_100_000.0 * 5)// +137
+            .put(137 + 0.1, 0.0)
+            .put(260000 + 137.0, 0.0)
+            .put(260000 + 137 + 0.1, 35_100_000.0 * 5)
+            .put(260000 + 137.0 + 3, 35_100_000.0 * 5) // +10
+            .put(260000 + 137 + 3 + 0.1, 0.0)
+            .put(332820 + 137.0 + 3, 0.0)
+            .put(332820 + 137 + 3 + 0.1, 35_100_000.0 * 5)
+            .put(332820 + 168.0, 35_100_000.0 * 5)
+            .put(332820 + 168.01, 6_220_344.0 * 5)
+            .put(332820 + 168.0 + 360, 6_220_344.0 * 5)
+            .put(332820 + 168.01 + 360, 2_461_801.0)
+            .put(332820 + 168.0 + 360 + 165 + 335, 2_461_801.0)
+            .put(332820 + 168.01 + 360 + 165 + 335, 0.0)
+            .build();
+
+    private static final Map<Double, Double> DEFAULT_ANGLES = ImmutableMap.<Double, Double>builder()
+            .put(0.0, 90.7)
+            .put(260000.0 - 10000, 90.7)
+            .put(260000.0, 180.0)
+            .put(332820.0 - 10000, 180.0)
+            .put(332820.0, 0.0)
             .build();
 
     private static final double DEFAULT_GRAVITY_STRENGTH = 6.67430e-11 * 5.972e24;
@@ -31,9 +47,9 @@ public class SimulatorGui extends JFrame {
     private static final double DEFAULT_WIND_STRENGTH = 0;
     private static final double DEFAULT_WIND_VARIATION = 0.001;
     private static final double DEFAULT_SURFACE_AIR_PRESSURE = 100_000;
-    private static final double DEFAULT_TIME_STEP = 0.00001;
-    private static final double DEFAULT_MAX_TIME = 10000;
-    private static final double DEFAULT_TARGET_ALTITUDE = 100000;
+    private static final double DEFAULT_TIME_STEP = 0.03;
+    private static final double DEFAULT_MAX_TIME = 1000000;
+    private static final double DEFAULT_TARGET_ALTITUDE = 1000000000;
 
 
     private JTextField engineMass;
@@ -91,7 +107,7 @@ public class SimulatorGui extends JFrame {
 
         GridBagConstraints constraints = new GridBagConstraints(0, 0, 1, 1, 1, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-                new Insets(0, 0, 0, 0), 0, 0);
+                new Insets(1, 0, 0, 0), 0, 0);
 
         JPanel viewContainer = new JPanel();
 
@@ -333,10 +349,18 @@ public class SimulatorGui extends JFrame {
         JTableButtonColumn bc = new JTableButtonColumn(pathTable);
         JButton add = new JButton("Add");
         add.addActionListener(bc);
-        TableModel model = new DefaultTableModel(new Object[][]{
-                {bc.newButton(), 0.0, 90.0},
-                {add, 200.0, 0.0}
-        }, new String[]{"Add/remove", "Time", "Direction angle (degrees)"});
+        Object[][] table = new Object[DEFAULT_ANGLES.size()][3];
+        {
+            int i = 0;
+            for (Map.Entry<Double, Double> entry : DEFAULT_ANGLES.entrySet()) {
+                table[i][0] = bc.newButton();
+                table[i][1] = entry.getKey();
+                table[i][2] = entry.getValue();
+                i++;
+            }
+            table[table.length - 1][0] = add;
+        }
+        TableModel model = new DefaultTableModel(table, new String[]{"Add/remove", "Time", "Direction angle (degrees)"});
         pathTable.setModel(model);
         bc.addToColumn(0);
 
@@ -393,6 +417,7 @@ public class SimulatorGui extends JFrame {
         JButton add = new JButton("Add");
         add.addActionListener(bc);
         TableModel model = new DefaultTableModel(new Object[][]{
+                {bc.newButton(), 0.0, -6_371_000 + 384_399_000, 1_737_000, 7.347_673e22 * 6.67430e-11},
                 {add, 0.0, -6_371_000, 6_371_000, DEFAULT_GRAVITY_STRENGTH}
         }, new String[]{"Add/remove", "Position x", "Position y", "Radius", "Strength (G*M)"});
         gravitySources.setModel(model);

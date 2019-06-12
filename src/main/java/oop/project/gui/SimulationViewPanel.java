@@ -6,6 +6,7 @@ import oop.project.Vector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.*;
@@ -29,14 +30,16 @@ class SimulationViewPanel extends JPanel {
         int offX = getWidth() / 2;
         int offY = getHeight() / 2;
 
-        double size = 1000;
+        ArrayList<Double> distances = new ArrayList<>();
         for (GravityField field : gravitySources) {
-            double distance = (field.getSourcePosition().sub(rocket.getPosition()).length() - field.getRadius()) * 4;
-            size = Math.max(size, distance);
+            double distance = (field.getSourcePosition().sub(rocket.getPosition()).length() - field.getRadius());
+            distances.add(distance);
         }
-        double scale = Math.min(getWidth(), getHeight()) / size;
+        distances.sort(Double::compare);
+        Double distance = distances.isEmpty() ? 1.0 : (distances.get(0) + 50) * 2;
+        double scale = Math.max(Math.min(getWidth() - 50, getHeight() - 50), 1) / distance;
+        double gridSize = Math.pow(2, (int) (Math.log(distance / 6) / Math.log(2)));
 
-        double gridSize = Math.pow(2, (int) (Math.log(size / 6) / Math.log(2)));
         g.setColor(new Color(1f, 0f, 0f, 0.05f));
         drawGrid(g, gridSize / 2, scale, centerX, centerY);
         g.setColor(new Color(1f, 0f, 0f, 0.1f));
